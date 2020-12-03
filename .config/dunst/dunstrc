@@ -283,7 +283,7 @@
 
 [urgency_normal]
     background = "#222222"
-    foreground = "#888888"
+    foreground = "#ffffff"
     timeout = 0
     # Icon for notifications with normal urgency, uncomment to enable
     #icon = /path/to/icon

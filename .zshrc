@@ -111,4 +111,4 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 export EDITOR=/usr/bin/vim
 export TERMINAL=/usr/bin/xfce4-terminal
-export PATH=$PATH:/home/khanj/scripts
+export PATH=$PATH:/home/khanj/.scripts
