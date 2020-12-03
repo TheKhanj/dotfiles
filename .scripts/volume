@@ -38,7 +38,7 @@ $DIR/notify-send.sh "$volume" -i "$icon_name" --replace=555 -t 2000
         fi
     fi
 fi
-bar=$(seq -s "|" $(($volume/2*95/100)) | sed 's/[0-9]//g')
+bar=$(seq -s "|" $(($volume/2*82/100)) | sed 's/[0-9]//g')
 # Send the notification
 $DIR/notify-send.sh "$volume" "$bar" -i "$icon_name" -t 2000 -h int:value:"$volume" -h string:synchronous:"$bar" --replace=555
 

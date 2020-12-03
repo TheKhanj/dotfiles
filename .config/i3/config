@@ -52,8 +52,8 @@ bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 ################################################################################################
 
 # Screen brightness controls
-# bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
-# bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+bindsym XF86MonBrightnessUp exec brightness up
+bindsym XF86MonBrightnessDown exec brightness down
 
 # Start Applications
 bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
@@ -387,9 +387,9 @@ for_window [class="^.*"] border pixel 2
 bindsym $mod+backslash exec playerctl play-pause
 bindsym $mod+bracketright exec playerctl next
 bindsym $mod+bracketleft exec playerctl next
-bindsym $mod+Up exec volume up
-bindsym $mod+Down exec volume down
-bindsym $mod+equal exec volume mute
+bindsym XF86AudioRaiseVolume exec volume up
+bindsym XF86AudioLowerVolume exec volume down
+bindsym XF86AudioMute exec volume mute
 
 #exec_always "setxkbmap -layout us,ir"
 #exec_always "setxkbmap -option 'grp:alt_shift_toggle'"
