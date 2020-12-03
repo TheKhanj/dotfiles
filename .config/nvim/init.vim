@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :set nocompatible
 
 :set rtp+=~/.config/nvim/bundle/Vundle.vim
@@ -79,3 +80,6 @@ nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gc    <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gf    <cmd>lua vim.lsp.buf.formatting()<CR>
+=======
+source ~/.vimrc
+>>>>>>> dd550cfe110c0307b50806030bdbf1e843f7e1a6
