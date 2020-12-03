@@ -1,6 +1,9 @@
 Xft.antialias:  true
-Xft.dpi:        75
+Xft.dpi:        64
 Xft.rgba:       rgba
 Xft.hinting:    1
 Xft.autohint:   0
-Xft.hintstyle:  hintslight
+Xft.hintstyle:  hintsfull
+
+
+rofi.terminal: /usr/bin/xfce4-terminal

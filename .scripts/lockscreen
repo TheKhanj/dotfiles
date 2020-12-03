@@ -1,0 +1,34 @@
+#!/bin/sh
+
+BACKGROUND='000000cc'  # clear ish
+TEXT='999999ff'
+RING='333333aa'
+
+TEXT_VER='ffffff88'
+RING_VER='333333ff'
+
+TEXT_WRONG='ffffffbb'
+RING_WRONG='b71c1cff'
+BACKGROUND_WRONG='7f0000cc'
+
+i3lockmore \
+\
+  --veriftext="Verifying" \
+  --wrongtext="Wrong" \
+  --noinputtext="No input" \
+  --image-fill /home/khanj/.local/share/backgrounds/lava.jpg \
+\
+\
+  --insidecolor $BACKGROUND \
+  --insidevercolor $BACKGROUND \
+  --insidewrongcolor $BACKGROUND_WRONG \
+\
+  --ringcolor $RING \
+  --ringvercolor $RING_VER \
+  --ringwrongcolor $RING_WRONG \
+\
+  --verifcolor $TEXT_VER \
+  --wrongcolor $TEXT_WRONG \
+  --layoutcolor $TEXT \
+\
+  
