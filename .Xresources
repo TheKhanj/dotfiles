@@ -5,3 +5,6 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 Xft.dpi: 64
+
+
+rofi.terminal: /usr/bin/xfce4-terminal

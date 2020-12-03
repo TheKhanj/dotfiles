@@ -11,12 +11,12 @@ configuration {
 /*	xoffset: 0;*/
 /*	fixed-num-lines: true;*/
 /*	show-icons: false;*/
-/*	terminal: "rofi-sensible-terminal";*/
+  	terminal: "xfce4-terminal --tab";
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host}";*/
 /*	run-command: "{cmd}";*/
 /*	run-list-command: "";*/
-/*	run-shell-command: "{terminal} -e {cmd}";*/
+  	run-shell-command: "xfce4-terminal --tab -e {cmd}";
 /*	window-command: "xkill -id {window}";*/
 /*	window-match-fields: "all";*/
 /*	drun-icon-theme: ;*/
