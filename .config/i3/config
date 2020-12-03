@@ -340,16 +340,16 @@ bar {
 	strip_workspace_numbers yes
 
     colors {
-        background #222D31
-        statusline #F9FAF9
-        separator  #454947
+        background #222222
+        statusline #FFFFFF
+        separator  #cccccc
 
 #                      border  backgr. text
-        focused_workspace  #F9FAF9 #16a085 #292F34
-        active_workspace   #595B5B #353836 #FDF6E3
-        inactive_workspace #595B5B #222D31 #EEE8D5
+        focused_workspace  #ffffff #666666 #FFFFFF
+        active_workspace   #595B5B #353836 #FFFFFF
+        inactive_workspace #595B5B #222D31 #FFFFFF
         binding_mode       #16a085 #2C2C2C #F9FAF9
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
+        urgent_workspace   #ff0000 #900000 #ffffff
     }
 # Khanj: autohide status bar
     mode hide
@@ -362,10 +362,10 @@ bar {
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
-  client.focused          #999999 #556064 #eeeeee #FDF6E3
-  client.focused_inactive #999999 #556064 #eeeeee #FDF6E3
-  client.unfocused        #4F5D64 #2F3D44 #eeeeee #454948
-  client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
+  client.focused          #222222 #555555 #ffffff #333333
+  client.focused_inactive #222222 #222222 #ffffff #FDF6E3
+  client.unfocused        #222222 #222222 #ffffff #FDF6E3
+  client.urgent           #ff0000 #900000 #ffffff #268BD2
   client.placeholder      #1c1c1c #0c0c0c #ffffff #000000 
 
   client.background       #2B2C2B
