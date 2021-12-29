@@ -1,0 +1,5 @@
+__pycache__
+__init__.py
+.config/ranger/.dir
+.config/ranger/scope.sh
+.config/ranger/plugins/*.pyo

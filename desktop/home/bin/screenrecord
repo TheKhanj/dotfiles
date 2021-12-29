@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+dir=~/Videos/record
+mkdir -p "$dir"
+
+location="$HOME/Videos/record"
+filename="$(date  +'%Y-%m-%d %H:%M:%S')"
+fullfilename="$location/$filename.mkv"
+
+if [ `ps aux | grep ffmpeg | wc -l` = "1" ]
+then
+  ffmpeg -y \
+    -f x11grab \
+    -s 1366x768 \
+    -i :0.0 \
+    -f alsa \
+    -i hw:0 \
+    -c:v libx264 -r 30 -c:a flac \
+    "$fullfilename" &
+
+  notify-send 'Started recording' "$fullfilename"
+else
+  killall ffmpeg
+  notify-send 'Stopped recording' 'File saved'
+fi

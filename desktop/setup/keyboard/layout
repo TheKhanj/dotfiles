@@ -1,0 +1,304 @@
+// My custom keyboard layout
+// Just copy this file in /usr/share/X11/xkb/symbols
+// Use it in your .xinitrc with `setxkbmap custom`
+
+xkb_symbols "pc" {
+    name[Group1]= "English (US)";
+    name[Group2]= "Persian (IR)";
+
+    key.type = "THREE_LEVEL";
+
+    include "level3(ralt_switch)"
+
+    key <CAPS> {
+        type="ONE_LEVEL",
+        [ Control_L ]
+    };
+    modifier_map Control { <CAPS> };
+
+    key <RTSH> {
+        type="PC_ALT_LEVEL2",
+        [ Shift_R, ISO_Next_Group ]
+    };
+
+    key <LCTL> {
+        type="ONE_LEVEL",
+        [ Control_L ]
+    };
+
+    key <LALT> {
+        type="ONE_LEVEL",
+        [ Alt_L ]
+    };
+
+    key <RTRN> {
+        type="ONE_LEVEL",
+        [ Return ]
+    };
+
+    key <TLDE> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ grave, asciitilde ],
+        symbols[Group2]=[ U200D, division ]
+    };
+    key <AE01> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 1, exclam ],
+        symbols[Group2]=[ Farsi_1, exclam ]
+    };
+    key <AE02> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 2, at ],
+        symbols[Group2]=[ Farsi_2, U066C ]
+    };
+    key <AE03> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 3, numbersign ],
+        symbols[Group2]=[ Farsi_3, U066B ]
+    };
+    key <AE04> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 4, dollar ],
+        symbols[Group2]=[ Farsi_4, UFDFC ]
+    };
+    key <AE05> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 5, percent ],
+        symbols[Group2]=[ Farsi_5, Arabic_percent ]
+    };
+    key <AE06> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 6, asciicircum ],
+        symbols[Group2]=[ Farsi_6, multiply ]
+    };
+    key <AE07> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 7, ampersand ],
+        symbols[Group2]=[ Farsi_7, Arabic_comma ]
+    };
+    key <AE08> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 8, asterisk ],
+        symbols[Group2]=[ Farsi_8, asterisk ]
+    };
+    key <AE09> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 9, parenleft ],
+        symbols[Group2]=[ Farsi_9, parenright ]
+    };
+    key <AE10> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ 0, parenright ],
+        symbols[Group2]=[ Farsi_0, parenleft ]
+    };
+    key <AE11> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ minus, underscore ],
+        symbols[Group2]=[ minus, Arabic_tatweel ]
+    };
+    key <AE12> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ equal, plus ],
+        symbols[Group2]=[ equal, plus ]
+    };
+
+    key <AD01> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ q, Q, percent ],
+        symbols[Group2]=[ Arabic_dad, Arabic_sukun, percent ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE05>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AD02> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ w, W, 8 ],
+        symbols[Group2]=[ Arabic_sad, Arabic_dammatan, Farsi_8 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE08>, clearmods=LevelThree) ]
+    };
+    key <AD03> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ e, E, 9 ],
+        symbols[Group2]=[ Arabic_theh, Arabic_kasratan, Farsi_9 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE09>, clearmods=LevelThree) ]
+    };
+    key <AD04> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ r, R, at ],
+        symbols[Group2]=[ Arabic_qaf, Arabic_fathatan, at ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE02>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AD05> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ t, T ],
+        symbols[Group2]=[ Arabic_feh, Arabic_damma ]
+    };
+    key <AD06> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ y, Y ],
+        symbols[Group2]=[ Arabic_ghain, Arabic_kasra ]
+    };
+    key <AD07> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ u, U, exclam ],
+        symbols[Group2]=[ Arabic_ain, Arabic_fatha, exclam ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE01>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AD08> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ i, I, 3 ],
+        symbols[Group2]=[ Arabic_ha, Arabic_shadda, Farsi_3 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE03>, clearmods=LevelThree) ]
+    };
+    key <AD09> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ o, O, 4 ],
+        symbols[Group2]=[ Arabic_khah, bracketright, Farsi_4 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE04>, clearmods=LevelThree) ]
+    };
+    key <AD10> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ p, P, ampersand ],
+        symbols[Group2]=[ Arabic_hah, bracketleft, ampersand ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE07>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AD11> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ bracketleft, braceleft, parenleft ],
+        symbols[Group2]=[ Arabic_jeem, braceright, parenleft ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE09>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AD12> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ bracketright, braceright, parenright ],
+        symbols[Group2]=[ Arabic_tcheh, braceleft, parenright ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE10>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <BKSL> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ backslash, bar ],
+        symbols[Group2]=[ backslash, bar ]
+    };
+
+    key <AC01> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ a, A, asciicircum ],
+        symbols[Group2]=[ Arabic_sheen, Arabic_hamzaonwaw, asciicircum ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE06>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AC02> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ s, S, 5 ],
+        symbols[Group2]=[ Arabic_seen, Arabic_hamzaonyeh, Farsi_5 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE05>, clearmods=LevelThree) ]
+    };
+    key <AC03> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ d, D, 6 ],
+        symbols[Group2]=[ Farsi_yeh, Arabic_yeh, Farsi_6 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE06>, clearmods=LevelThree) ]
+    };
+    key <AC04> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ f, F, 7 ],
+        symbols[Group2]=[ Arabic_beh, Arabic_hamzaunderalef, Farsi_7 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE07>, clearmods=LevelThree) ]
+    };
+    key <AC05> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ g, G, equal ],
+        symbols[Group2]=[ Arabic_lam, Arabic_hamzaonalef, equal ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE12>, clearmods=LevelThree) ]
+    };
+    key <AC06> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ h, H, asterisk ],
+        symbols[Group2]=[ Arabic_alef, Arabic_maddaonalef, asterisk ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE08>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AC07> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ j, J, 0 ],
+        symbols[Group2]=[ Arabic_teh, Arabic_tehmarbuta, Farsi_0 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE10>, clearmods=LevelThree) ]
+    };
+    key <AC08> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ k, K, 1 ],
+        symbols[Group2]=[ Arabic_noon, guillemotright, Farsi_1 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE01>, clearmods=LevelThree) ]
+    };
+    key <AC09> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ l, L, 2 ],
+        symbols[Group2]=[ Arabic_meem, guillemotleft, Farsi_2 ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE02>, clearmods=LevelThree) ]
+    };
+    key <AC10> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ semicolon, colon, numbersign ],
+        symbols[Group2]=[ Arabic_keheh, colon, numbersign ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE03>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AC11> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ apostrophe, quotedbl, dollar ],
+        symbols[Group2]=[ Arabic_gaf, Arabic_semicolon, dollar ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE04>, mods=Shift, clearmods=LevelThree) ]
+    };
+
+    key <AB01> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ z, Z ],
+        symbols[Group2]=[ Arabic_zah, Arabic_kaf ]
+    };
+    key <AB02> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ x, X ],
+        symbols[Group2]=[ Arabic_tah, Arabic_madda_above ]
+    };
+    key <AB03> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ c, C ],
+        symbols[Group2]=[ Arabic_zain, Arabic_jeh ]
+    };
+    key <AB04> {
+        type="TWO_LEVEL",
+        symbols[Group1]=[ v, V ],
+        symbols[Group2]=[ Arabic_ra, Arabic_superscript_alef ]
+    };
+    key <AB05> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ b, B, underscore ],
+        symbols[Group2]=[ Arabic_thal, U200C, underscore ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE11>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AB06> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ n, N, minus ],
+        symbols[Group2]=[ Arabic_dal, Arabic_hamza_above, minus ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE11>, clearmods=LevelThree) ]
+    };
+    key <AB07> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ m, M, plus ],
+        symbols[Group2]=[ Arabic_peh, Arabic_hamza, plus ],
+        actions=[ NoAction(), NoAction(), RedirectKey(keycode=<AE12>, mods=Shift, clearmods=LevelThree) ]
+    };
+    key <AB08> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ comma, less, comma ],
+        symbols[Group2]=[ Arabic_waw, greater, comma ],
+        actions=[ NoAction(), NoAction(), SetMods(clearmods=LevelThree) ]
+    };
+    key <AB09> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ period, greater, period ],
+        symbols[Group2]=[ period, less, period ],
+        actions=[ NoAction(), NoAction(), SetMods(clearmods=LevelThree) ]
+    };
+    key <AB10> {
+        type="THREE_LEVEL",
+        symbols[Group1]=[ slash, question, slash ],
+        symbols[Group2]=[ slash, Arabic_question_mark, slash ],
+        actions=[ NoAction(), NoAction(), SetMods(clearmods=LevelThree) ]
+    };
+};

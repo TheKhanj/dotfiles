@@ -1,0 +1,7 @@
+inoremap kj <esc>
+nnoremap vv V
+nnoremap ; :
+nnoremap : :
+
+nnoremap <c-h> 10zh
+nnoremap <c-l> 10zl

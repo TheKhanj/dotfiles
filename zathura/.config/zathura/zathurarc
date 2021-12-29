@@ -1,0 +1,9 @@
+unmap f
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen
+
+map ; feedkeys :
+map [fullscreen] ; feedkeys :
+
+map i set recolor
+map [fullscreen] i set recolor

@@ -1,0 +1,25 @@
+[user]
+  email = p.khanjankhani@digikala.com
+  name = Pooyan Khanjankhani
+
+# [http]
+#   proxy = socks://127.0.0.1:9050
+
+[merge]
+  tool = nvimmerge
+
+[mergetool]
+  prompt = false
+
+[mergetool "nvimmerge"]
+  cmd = nvim -d
+
+[diff]
+  tool = nvimdiff
+
+[difftool]
+  prompt = false
+  trustExitCode = true
+
+[difftool "nvimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE

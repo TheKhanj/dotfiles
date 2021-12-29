@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+bootstrap_buddy_touchpad() {
+  xinput set-prop \
+    'AlpsPS/2 ALPS DualPoint TouchPad' \
+    'Synaptics Two-Finger Scrolling' 1 1
+}
+
+bootstrap_birikht_touchpad() {
+  touchpad='MSFT0001:01 2808:0101 Touchpad'
+
+  xinput set-prop "$touchpad" 'libinput Tapping Enabled' 1
+  xinput set-prop "$touchpad" 'libinput Tapping Drag Enabled' 1
+  xinput set-prop "$touchpad" 'libinput Tapping Drag Lock Enabled' 1
+}
+
+system="$(hostname)"
+
+if [ "$system" = 'buddy' ]; then
+  bootstrap_buddy_touchpad
+elif [ "$system" = 'birikht' ]; then
+  bootstrap_birikht_touchpad
+fi

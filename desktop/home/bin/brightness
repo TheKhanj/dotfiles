@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# You can call this script like this:
+# brightnessControl [ up | down ]
+
+exp_time=2000
+
+get_brightness() {
+  xbacklight -get | cut -d '.' -f 1
+}
+
+send_notification() {
+  brightness=$(get_brightness)
+  notify-send "$brightness" -t "$exp_time"
+}
+
+case $1 in
+  up)
+    xbacklight -inc "${2:-5}"
+    send_notification
+    ;;
+  down)
+    xbacklight -dec "${2:-5}"
+    send_notification
+    ;;
+esac
