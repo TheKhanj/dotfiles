@@ -1,0 +1,28 @@
+[global]
+    frame_color = "#222222"
+    separator_color = "#000000"
+    separator_height = 2
+    padding = 10 
+    font = Ubuntu 10
+    origin = bottom-right
+    gaps = true
+    gap_size = 10
+    format = "<big><b>%s</b></big><small>\n\n</small>%b"
+
+[urgency_low]
+    background = "#111111"
+    foreground = "#bbbbbb"
+    timeout = 7
+
+[urgency_normal]
+    background = "#000000"
+    foreground = "#ffffff"
+    timeout = 7
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#ffffff"
+    frame_color = "#ff0000"
+    timeout = 7
+
+# vi: ft=dosini

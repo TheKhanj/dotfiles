@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+charge=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
+status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+last_battery_check_file='/tmp/last_battery_check'
+last_battery="$(cat $last_battery_check_file 2>/dev/null)"
+
+if [ "$status" != "Charging" ]; then
+	if [ "$charge" -lt 10 ] &&
+		[ "$last_battery" != "$charge" ]; then
+		notify-send -u critical "Critical battery level $charge%"
+	fi
+fi
+
+echo -n "$charge" >$last_battery_check_file

@@ -1,0 +1,35 @@
+[user]
+	email = pooyankhan@gmail.com
+	name = Pooyan Khanjankhani
+[pull]
+	rebase = false
+[merge]
+	tool = nvimmerge
+[diff]
+	tool = nvimdiff
+[mergetool]
+	prompt = false
+[mergetool "nvimmerge"]
+	cmd = nvim -d
+[difftool]
+	prompt = false
+	trustExitCode = true
+[difftool "nvimdiff"]
+	cmd = nvim -d $LOCAL $REMOTE
+[credential]
+	helper = store
+[http "https://git.piranpardaz.ir/"]
+	sslVerify = false
+[credential "https://git.piranpardaz.ir/"]
+	username = PKhanjankhani
+	helper = "cache --timeout 86400"
+[http "https://git.sanfam.ir/"]
+	sslVerify = false
+[credential "https://git.sanfam.ir/"]
+	username = PKhanjankhani
+	helper = "cache --timeout 86400"
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f

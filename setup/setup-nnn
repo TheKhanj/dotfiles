@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+plugins=(fzcd dragdrop cdpath)
+plugins_installed=1
+
+for plugin in "${plugins[@]}"; do
+	path="$HOME/.config/nnn/plugins/$plugin"
+
+	[ -f "$path" ] || {
+		plugins_installed=0
+		break
+	}
+done
+
+[ $plugins_installed -eq 1 ] && exit
+
+sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+echo 'nnn plugins installed'

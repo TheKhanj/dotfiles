@@ -1,0 +1,10 @@
+[Unit]
+Description=Tun2socks Service
+After=network.target tuntap.service xray.service
+Requires=network.target tuntap.service xray.service
+
+[Service]
+ExecStart=/usr/bin/tun2socks -device tun0 -proxy socks5://127.0.0.1:10808
+
+[Install]
+RequiredBy=vpn.target

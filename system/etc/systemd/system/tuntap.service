@@ -1,0 +1,14 @@
+[Unit]
+Description=TunTap Service
+After=network.target
+Requires=network.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/tuntap start
+ExecStop=/usr/bin/tuntap stop
+RemainAfterExit=true
+
+[Install]
+RequiredBy=vpn.target

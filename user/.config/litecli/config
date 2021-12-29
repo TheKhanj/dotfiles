@@ -1,0 +1,7 @@
+[main]
+pager = vd -f csv
+table_format = csv
+key_bindings = vi
+enable_pager = True
+
+# vi: ft=dosini

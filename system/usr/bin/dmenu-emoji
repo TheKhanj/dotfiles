@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+emoji="$(cat "/usr/share/emoji/emoji.db" |
+	dmenu -l 10 -fn "Apple Color Emoji" |
+	awk '{ print $1 }')"
+
+type_emoji() {
+	window_name=$(xdotool getactivewindow getwindowname)
+
+	echo "$window_name" | grep -Eq '^Telegram' &&
+		xdotool key 'Control_L+v' ||
+		xdotool type $emoji
+}
+
+copy_to_clipboard() {
+	echo -n "$emoji" | xclip -selection clipboard
+}
+
+type_emoji
+copy_to_clipboard

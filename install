@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+execute_with_privilege() {
+	local base_dir="$1"
+	[ "$base_dir" = 'system' ] && {
+		sudo ${@:2}
+		return $?
+	} || {
+		${@:2}
+		return $?
+	}
+}
+
+get_destination_dir() {
+	local base_dir="$1"
+
+	[ $base_dir = 'system' ] && echo -n "/" || echo -n "$HOME"
+}
+
+assert_destination_directories() {
+	local base_dir="$1"
+	local dest_dir=$(get_destination_dir "$base_dir")
+
+	find "$base_dir" -type d | while read dir; do
+		local path="$dest_dir/$(echo "$dir" | sed "s/$base_dir//")"
+
+		execute_with_privilege "$base_dir" mkdir -p "$path" 2>/dev/null
+	done
+}
+
+setup_symlinks() {
+	local base_dir="$1"
+
+	assert_destination_directories "$base_dir"
+	execute_with_privilege "$base_dir" stow -t "$(get_destination_dir "$base_dir")" "$base_dir"
+	return $?
+}
+
+main() {
+	setup_symlinks user || exit 1
+	setup_symlinks system || exit 1
+
+	./setup/setup-nnn
+	./setup/setup-keyboard
+	./setup/setup-fonts
+	./setup/setup-system
+
+	sudo locale-gen
+	ln -sf $PWD/nvim/ $HOME/.config/nvim
+}
+
+main

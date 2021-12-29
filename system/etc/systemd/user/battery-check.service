@@ -1,0 +1,7 @@
+[Unit]
+Description=Battery Check Service
+Wants=desktop.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/battery-check

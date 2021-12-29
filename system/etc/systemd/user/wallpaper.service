@@ -1,0 +1,7 @@
+[Unit]
+Description=Wallpaper Service
+BindsTo=desktop.target
+
+[Service]
+ExecStart=/usr/bin/nitrogen --restore
+Environment='DISPLAY=:0'

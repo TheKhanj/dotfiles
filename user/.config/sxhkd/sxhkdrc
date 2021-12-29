@@ -1,0 +1,46 @@
+super + Return
+	xfce4-terminal
+super + p
+	dmenu_run
+XF86MonBrightness{Up,Down}
+	brightness {up,down}
+shift + XF86MonBrightness{Up,Down}
+	brightness {up,down} 1
+XF86Audio{Raise,Lower}Volume
+	volume {up,down}
+shift + XF86Audio{Raise,Lower}Volume
+	volume {up,down} 1
+XF86AudioMute
+	volume mute
+Print
+	screenshot
+shift + Print
+	screenrecord
+super + slash
+	switch-display
+super + shift + t
+	/usr/bin/translate
+super + z
+	slock
+super + semicolon
+	dunstctl close
+super + colon
+	dunstctl history-pop
+super + apostrophe
+	dmenu-emoji
+super + bracketleft
+	playerctl previous
+XF86AudioPrev
+	playerctl previous
+super + bracketright
+	playerctl next
+XF86AudioNext
+	playerctl next
+super + backslash
+	playerctl play-pause
+XF86AudioPlay
+	playerctl play-pause
+alt + n
+	xmouseless
+
+# vi: ft=sh

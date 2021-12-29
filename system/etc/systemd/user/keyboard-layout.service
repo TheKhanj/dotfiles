@@ -1,0 +1,7 @@
+[Unit]
+Description=Keyboard Layout Service
+BindsTo=keyboard.target
+
+[Service]
+ExecStart=/usr/bin/sh -c 'sleep 1; /usr/bin/setxkbmap custom;'
+Environment='DISPLAY=:0'

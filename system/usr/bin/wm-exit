@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+options="$(echo Yes No | tr ' ' "\n")"
+result="$(echo "$options" | dmenu -p "Are you sure you want to exit?")"
+
+if [ "$result" = "Yes" ]; then
+	i3-msg exit
+fi

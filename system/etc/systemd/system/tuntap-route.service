@@ -1,0 +1,14 @@
+[Unit]
+Description=TunTap Route Service
+After=tun2socks.service
+Requires=tun2socks.serivce
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/tuntap route
+ExecStop=/usr/bin/tuntap unroute
+RemainAfterExit=true
+
+[Install]
+RequiredBy=vpn.target

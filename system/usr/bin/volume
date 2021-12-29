@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+# You can call this script like this:
+# volume [ up | down | mute ]
+
+exp_time=2000
+device=pulse
+pactl_device="$(pactl get-default-sink)"
+notification_id=99999
+
+get_volume() {
+	pactl list sinks | awk -v RS= "/Name: $pactl_device/" | grep Volume: | head -n 1 | grep -o '[0-9]\+%' | head -n 1
+}
+
+is_mute() {
+	pactl get-sink-mute "$pactl_device" | grep 'yes' >/dev/null
+}
+
+send_notification() {
+	local volume="$(get_volume)"
+
+	notify-send -r $notification_id "Volume: $volume" -t "$exp_time"
+}
+
+command="$1"
+case "$command" in
+up)
+	pactl set-sink-volume "$pactl_device" "+${2:-5}%" >/dev/null
+	send_notification
+	;;
+down)
+	pactl set-sink-volume "$pactl_device" "-${2:-5}%" >/dev/null
+	send_notification
+	;;
+mute)
+	pactl set-sink-mute "$pactl_device" toggle >/dev/null
+
+	if is_mute; then
+		notify-send -r $notification_id "Muted" -t $exp_time
+	else
+		send_notification
+	fi
+	;;
+esac
