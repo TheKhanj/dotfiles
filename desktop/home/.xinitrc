@@ -83,6 +83,13 @@ interval() {
   done
 }
 
+reminder_interval() {
+  while true; do
+    notify-send 'Reminder 😇' "Take a break sweaty😻🫶! You need that 👼"
+    sleep $((20 * 60))
+  done
+}
+
 bootstrap() {
   create_tmux_session
   start_utils
@@ -93,6 +100,7 @@ bootstrap() {
   start_ssh
 
   interval &
+  reminder_interval &
   INTERVAL_PID=$!
 }
 
