@@ -28,5 +28,5 @@ MiscSearchDialogOpacity=100
 MiscShowUnsafePasteDialog=FALSE
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
 MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
-FontName=Ubuntu Mono 14
+FontName=UbuntuMono Nerd Font Mono 14
 
