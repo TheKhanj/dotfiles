@@ -2,8 +2,7 @@
 
 cd desktop && ./install.sh && cd - > /dev/null || exit 1
 
-stow -vt "$HOME" email \
-  && stow -vt "$HOME" git \
+stow -vt "$HOME" git \
   && stow -vt "$HOME" litecli \
   && stow -vt "$HOME" mpv \
   && stow -vt "$HOME" nvim \
