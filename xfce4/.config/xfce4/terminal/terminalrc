@@ -30,4 +30,6 @@ MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
 FontName=UbuntuMono Nerd Font Mono 14
 ScrollingOnKeystroke=FALSE
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.900000
 
