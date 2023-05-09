@@ -1,4 +1,4 @@
 UseTab: Always
-IndentWidth: 4
-TabWidth: 4
+IndentWidth: 2
+TabWidth: 2
 IndentPPDirectives: AfterHash
