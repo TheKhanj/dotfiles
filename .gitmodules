@@ -13,6 +13,3 @@
 [submodule "nvim/.config/nvim"]
 	path = nvim/.config/nvim
 	url = git@github.com:thekhanj/nvim.git
-[submodule "digikala"]
-	path = digikala
-	url = git@github.com:thekhanj/digikala.git
