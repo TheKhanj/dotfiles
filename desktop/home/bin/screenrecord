@@ -10,7 +10,6 @@ if [ `ps aux | grep ffmpeg | wc -l` = "1" ]
 then
   ffmpeg -y \
     -f x11grab \
-    -s 1366x768 \
     -i :0.0 \
     -f alsa \
     -i hw:0 \
