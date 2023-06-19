@@ -1,0 +1,4 @@
+#var
+link-style=green
+active-link-style=green,bold
+match-style=underline,bold,red

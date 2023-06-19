@@ -14,7 +14,8 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" xfce4 &&
 	stow -vt "$HOME" zathura &&
 	stow -vt "$HOME" mycli &&
-	stow -vt "$HOME" clang ||
+	stow -vt "$HOME" clang &&
+	stow -vt "$HOME" info ||
 	exit 1
 
 stow -vt "$HOME" shell || exit 1
