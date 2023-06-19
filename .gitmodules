@@ -1,15 +1,3 @@
-[submodule "shell/git/ohmyzsh"]
-	path = shell/git/ohmyzsh
-	url = git@github.com:ohmyzsh/ohmyzsh.git
-[submodule "shell/git/zsh-autosuggestions"]
-	path = shell/git/zsh-autosuggestions
-	url = git@github.com:zsh-users/zsh-autosuggestions.git
-[submodule "shell/git/zsh-system-clipboard"]
-	path = shell/git/zsh-system-clipboard
-	url = git@github.com:kutsan/zsh-system-clipboard.git
-[submodule "cmus/git/cmus-notify"]
-	path = cmus/git/cmus-notify
-	url = git@github.com:dcx86r/cmus-notify.git
 [submodule "nvim/.config/nvim"]
 	path = nvim/.config/nvim
 	url = git@github.com:thekhanj/nvim.git

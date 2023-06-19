@@ -39,7 +39,7 @@ get_bar() {
 }
 
 set_widgets() {
-  if does_have_battery; then
+  if is_laptop; then
     widgets=('battery' 'date')
   elif [ $(get_machine) = 'desktop' ]; then
     widgets=('date')

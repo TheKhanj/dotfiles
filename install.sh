@@ -13,8 +13,6 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" tmux &&
 	stow -vt "$HOME" xfce4 &&
 	stow -vt "$HOME" zathura &&
-	stow -vt "$HOME" digikala &&
-	stow -vt "$HOME" jetbrains &&
 	stow -vt "$HOME" mycli &&
 	stow -vt "$HOME" clang ||
 	exit 1
