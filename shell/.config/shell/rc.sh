@@ -67,7 +67,7 @@ init_colors() {
 }
 
 dir_prompt() {
-	printf "%s@%s: " "$USER" "$(hostname)"
+	printf "%s@%s:\w\$ " "$USER" "$(hostname)"
 }
 
 init_prompt() {
