@@ -98,7 +98,6 @@ debootstrap() {
 }
 
 main() {
-	init_exports
 	bootstrap
 	i3
 	debootstrap
