@@ -124,6 +124,11 @@ enable_vi_mode() {
 	bind '"kj": "\e"'
 }
 
+enable_grc() {
+	export GRC_ALIASES=true
+	. /etc/grc.sh
+}
+
 setup_shell() {
 	init_aliases
 	init_colors
@@ -131,4 +136,5 @@ setup_shell() {
 	init_exports
 	init_less_colors
 	enable_vi_mode
+	enable_grc
 }
