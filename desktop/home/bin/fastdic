@@ -1,17 +1,17 @@
 #!/usr/bin/sh
-res=`curl -sS 'https://fastdic.com/suggestions' \
-  -H 'Content-Type: application/json' \
-  -H 'Referer: https://fastdic.com/word/panacea' \
-  -H 'TE: trailers' --data-raw "{\"word\":\"$1\"}"`
+res=$(curl -sS 'https://fastdic.com/suggestions' \
+	-H 'Content-Type: application/json' \
+	-H 'Referer: https://fastdic.com/word/panacea' \
+	-H 'TE: trailers' --data-raw "{\"word\":\"$1\"}")
 
-words=`echo $res \
-  | jq '.[]|.["word", "meaning"]' \
-  | sed '$!N;s$\n$,$' \
-  | cut -d\" -f2,4 --output-delimiter ',' \
-  | sed "=" | sed "N;s/\n/,/" \
-  | sed "s/'/./g"
-  `
+words=$(
+	echo $res |
+		jq '.[]|.["word", "meaning"]' |
+		sed '$!N;s$\n$,$' |
+		cut -d\" -f2,4 --output-delimiter ',' |
+		sed "=" | sed "N;s/\n/,/" |
+		sed "s/'/./g"
+)
 headers=",Word,Translation"
-
 
 xfce4-terminal -e "sh -c 'echo -e \"$headers\n\" \"$words\" | vd -f csv -'"

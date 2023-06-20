@@ -2,9 +2,9 @@
 dir=~/Pictures/sc
 mkdir -p "$dir"
 
-filename="$(date  +'%Y-%m-%d %H:%M:%S')"
+filename="$(date +'%Y-%m-%d %H:%M:%S')"
 fullfilename="$dir/$filename.png"
 
-import -window root "$fullfilename" \
-  && notify-send "Screenshot: Saved" "$fullfilename" \
-  || notify-send "Screenshot: Failed" "Install \`imagemagick\` package"
+import -window root "$fullfilename" &&
+	notify-send "Screenshot: Saved" "$fullfilename" ||
+	notify-send "Screenshot: Failed" "Install \`imagemagick\` package"

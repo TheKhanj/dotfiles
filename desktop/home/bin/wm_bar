@@ -1,60 +1,59 @@
 #!/usr/bin/env bash
 
-. $HOME/.config/shell/utils.sh
+. $HOME/.profile
 
 seperator=' | '
 widgets=()
 
-w_battery () {
-    # Change BAT1 to whatever your battery is identified as. Typically BAT0 or BAT1
-    charge=$(cat /sys/class/power_supply/BAT0/capacity 2> /dev/null)
-    status=$(cat /sys/class/power_supply/BAT0/status 2> /dev/null)
+w_battery() {
+	# Change BAT1 to whatever your battery is identified as. Typically BAT0 or BAT1
+	charge=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
+	status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
 
-    if [ -z $status ]; then
-      return;
-    fi
+	if [ -z $status ]; then
+		return
+	fi
 
-    if [ "$status" = "Charging" ]; then
-      printf "🔌 %s%% %s" "$charge" "$status"
-    else
-      printf "🔋 %s%% %s" "$charge" "$status"
-    fi
+	if [ "$status" = "Charging" ]; then
+		printf "🔌 %s%% %s" "$charge" "$status"
+	else
+		printf "🔋 %s%% %s" "$charge" "$status"
+	fi
 }
 
-w_date () {
-    printf "📆 %s" "$(date "+%a %d-%m-%y %T")"
+w_date() {
+	printf "📆 %s" "$(date "+%a %d-%m-%y %T")"
 }
 
 get_bar() {
-  index=0
-  for widget in ${widgets[@]}; do
-    if [ $index -ne 0 ]; then
-      printf "%s" "$seperator"
-    fi
+	index=0
+	for widget in ${widgets[@]}; do
+		if [ $index -ne 0 ]; then
+			printf "%s" "$seperator"
+		fi
 
-    w_$widget
+		w_$widget
 
-    index=$((index + 1))
-  done
+		index=$((index + 1))
+	done
 }
 
 set_widgets() {
-  if is_laptop; then
-    widgets=('battery' 'date')
-  elif [ $(get_machine) = 'desktop' ]; then
-    widgets=('date')
-  fi
+	if is_laptop; then
+		widgets=('battery' 'date')
+	elif [ $(get_machine) = 'desktop' ]; then
+		widgets=('date')
+	fi
 }
 
 main() {
-  set_widgets
+	set_widgets
 
-  while true
-  do
-    res=$(get_bar)
-    echo "$res"
-    sleep 1
-  done
+	while true; do
+		res=$(get_bar)
+		echo "$res"
+		sleep 1
+	done
 }
 
 main

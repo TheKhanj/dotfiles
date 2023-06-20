@@ -1,70 +1,70 @@
 #!/usr/bin/env sh
 
-storage_file="/tmp/is_on_second_display" 
+storage_file="/tmp/is_on_second_display"
 
 log() {
-  notify-send "Switch display" "$@"
+	notify-send "Switch display" "$@"
 }
 
 deactivate_display() {
-  xrandr --output "$1" --off
+	xrandr --output "$1" --off
 }
 
 run_misc() {
-  sleep 5
-  nitrogen --restore
-  xrdb -merge ~/.Xresources
+	sleep 5
+	nitrogen --restore
+	xrdb -merge ~/.Xresources
 }
 
 activate_display() {
-  xrandr --output "$1" --auto
+	xrandr --output "$1" --auto
 
-  run_misc &
+	run_misc &
 }
 
 get_connected_displays() {
-  xrandr \
-    | grep ' connected' \
-    | awk '{ print $1 }'
+	xrandr |
+		grep ' connected' |
+		awk '{ print $1 }'
 }
 
 get_active_display() {
-  xrandr --listactivemonitors \
-    | grep ' [[:digit:]]:' \
-    | awk '{ print $2 }' \
-    | sed 's/\(+\|\*\)//g' \
-    | head -n 1
+	xrandr --listactivemonitors |
+		grep ' [[:digit:]]:' |
+		awk '{ print $2 }' |
+		sed 's/\(+\|\*\)//g' |
+		head -n 1
 }
 
 get_alternative_display() {
-  get_connected_displays \
-    | grep -v "$(get_active_display)" \
-    | head -n 1
+	get_connected_displays |
+		grep -v "$(get_active_display)" |
+		head -n 1
 }
 
 is_active_display_connected() {
-  $active="$1"
-  get_connected_displays | grep "$active"
+	$active="$1"
+	get_connected_displays | grep "$active"
 }
 
 switch_display() {
-  active="$(get_active_display)"
-  alternative="$(get_alternative_display)"
+	active="$(get_active_display)"
+	alternative="$(get_alternative_display)"
 
-  if ! is_active_display_connected; then
-    first_connected_display="$(get_connected_displays | head -n 1)"
-    activate_display "$first_connected_display"
-    log "There was no display active, Activated one of them for you."
-    exit 1
-  fi
+	if ! is_active_display_connected; then
+		first_connected_display="$(get_connected_displays | head -n 1)"
+		activate_display "$first_connected_display"
+		log "There was no display active, Activated one of them for you."
+		exit 1
+	fi
 
-  if [ -z "$alternative" ]; then
-    log "There is no alternative displays"
-    exit 1
-  fi
+	if [ -z "$alternative" ]; then
+		log "There is no alternative displays"
+		exit 1
+	fi
 
-  deactivate_display "$active"
-  activate_display "$alternative"
+	deactivate_display "$active"
+	activate_display "$alternative"
 }
 
 switch_display

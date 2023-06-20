@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-pacman -Qi \
-  | grep -E '(^Name|^Installed Size)' \
-  | paste - - -d '\t' \
-  | sed -E 's/Name *: *([^ \t]+)[ \t]+Installed Size *: *([^ ]+) +([MK])?.*/\2\3\t\1/' \
-  | sort -h
+pacman -Qi |
+	grep -E '(^Name|^Installed Size)' |
+	paste - - -d '\t' |
+	sed -E 's/Name *: *([^ \t]+)[ \t]+Installed Size *: *([^ ]+) +([MK])?.*/\2\3\t\1/' |
+	sort -h

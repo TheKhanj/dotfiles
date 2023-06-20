@@ -17,7 +17,3 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" clang &&
 	stow -vt "$HOME" info ||
 	exit 1
-
-stow -vt "$HOME" shell || exit 1
-ln -s ~/git/zsh-autosuggestions ~/git/ohmyzsh/custom/plugins 2>/dev/null
-ln -s ~/git/zsh-system-clipboard ~/git/ohmyzsh/custom/plugins 2>/dev/null

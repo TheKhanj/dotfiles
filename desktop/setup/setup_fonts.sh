@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. $HOME/dotfiles/shell/.config/shell/utils.sh
+. $HOME/dotfiles/desktop/home/.profile
 
 if [ hostname != 'peach' ]; then
   return
