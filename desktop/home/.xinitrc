@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. $HOME/.profile
+. $HOME/.config/shell/rc.sh
 
 export DISPLAY=':0'
 export XORG_SESSION='desktop'

@@ -132,4 +132,3 @@ setup_shell() {
 	init_less_colors
 	enable_vi_mode
 }
-
