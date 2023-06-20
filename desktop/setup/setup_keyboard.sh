@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-. $HOME/dotfiles/desktop/home/.profile
+. $HOME/dotfiles/shell/.config/shell/rc.sh
 
 touchcursor_template="$HOME/dotfiles/desktop/setup/keyboard/touchcursor_template"
 

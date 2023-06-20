@@ -15,5 +15,6 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" zathura &&
 	stow -vt "$HOME" mycli &&
 	stow -vt "$HOME" clang &&
-	stow -vt "$HOME" info ||
+	stow -vt "$HOME" info &&
+	stow -vt "$HOME" shell ||
 	exit 1
