@@ -20,6 +20,7 @@ is_laptop() {
 
 init_aliases() {
 	alias r="source ranger"
+	alias ls="ls --color=auto"
 }
 
 init_colors() {
