@@ -43,3 +43,12 @@ super + colon
 
 super + apostrophe
   dmenu_emoji
+
+super + bracketleft
+  playerctl previous
+
+super + bracketright
+  playerctl next
+
+super + backslash
+  playerctl play-pause
