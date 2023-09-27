@@ -10,7 +10,7 @@ dunst_window=1
 picom_window=2
 keyboard_window=3
 nm_applet_window=4
-ssh_window=5
+vpn_window=5
 
 create_tmux_session() {
 	tmux new-session -d -s "$XORG_SESSION"
@@ -51,10 +51,10 @@ start_picom() {
 	tmux send-keys -t "$target" 'picom --config ~/.config/picom.conf' C-m
 }
 
-start_ssh() {
-	target="$XORG_SESSION:$ssh_window"
-	tmux new-window -t "$target" -n "ssh"
-	tmux send-keys -t "$target" 'ssh -D 9050 -N root@us -p 443' C-m
+start_vpn() {
+	target="$XORG_SESSION:$vpn_window"
+	tmux new-window -t "$target" -n "vpn"
+	tmux send-keys -t "$target" 'xray run --config ~/vpn/ir4.json' C-m
 }
 
 check_for_critical_battery_level() {
@@ -86,7 +86,7 @@ bootstrap() {
 	start_dunst
 	start_picom
 	start_nm_applet
-	start_ssh
+	start_vpn
 
 	interval &
 	INTERVAL_PID=$!
