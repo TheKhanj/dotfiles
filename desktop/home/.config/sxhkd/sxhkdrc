@@ -47,8 +47,17 @@ super + apostrophe
 super + bracketleft
   playerctl previous
 
+XF86AudioPrev
+  playerctl prev
+
 super + bracketright
   playerctl next
 
+XF86AudioNext
+  playerctl next
+
 super + backslash
+  playerctl play-pause
+
+XF86AudioPlay
   playerctl play-pause
