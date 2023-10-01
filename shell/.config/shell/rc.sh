@@ -98,6 +98,9 @@ init_exports() {
 	export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 
 	export PHP_CS_FIXER_IGNORE_ENV=1
+
+	export HISTSIZE=10000
+	export HISTFILESIZE=10000
 }
 
 init_less_colors() {
