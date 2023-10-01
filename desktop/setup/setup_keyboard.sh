@@ -4,7 +4,6 @@
 touchcursor_template="$HOME/dotfiles/desktop/setup/keyboard/touchcursor_template"
 
 get_keyboards() {
-  # TODO: probably open fzf for choosing the keyboard
   grep -E 'Name=|Handlers=|EV=' /proc/bus/input/devices \
     | grep -B2 EV='12001' --no-group-separator \
     | grep 'Name=' \
