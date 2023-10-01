@@ -141,6 +141,35 @@ setup_fzf() {
 	bind -r "\ec"
 }
 
+paste_from_clipboard() {
+	local shift=$1
+
+	local head=${READLINE_LINE:0:READLINE_POINT+shift}
+	local tail=${READLINE_LINE:READLINE_POINT+shift}
+
+	local paste=$(xclip -out -selection clipboard)
+	local paste_len=${#paste}
+
+	READLINE_LINE=${head}${paste}${tail}
+	let READLINE_POINT+=$paste_len+$shift-1
+}
+
+yank_line_to_clipboard() {
+	echo -n "$READLINE_LINE" | xclip -in -selection clipboard
+}
+
+kill_line_to_clipboard() {
+	yank_line_to_clipboard
+	READLINE_LINE=""
+}
+
+setup_clipboard() {
+	bind -m vi-command -x '"P": paste_from_clipboard 0'
+	bind -m vi-command -x '"p": paste_from_clipboard 1'
+	bind -m vi-command -x '"yy": yank_line_to_clipboard'
+	bind -m vi-command -x '"dd": kill_line_to_clipboard'
+}
+
 setup_shell() {
 	init_aliases
 	init_colors
@@ -150,4 +179,5 @@ setup_shell() {
 	enable_vi_mode
 	enable_grc
 	setup_fzf
+	setup_clipboard
 }
