@@ -13,7 +13,7 @@ mkfifo $fifo
 
 fill_fifo() {
 	echo "$parents" >>$fifo
-	find -type d 2>/dev/null | grep -v '^\.$' >>$fifo
+	find -type d 2>/dev/null | grep -v -E '(^\.$|node_modules|/\.[^/]+)' >>$fifo
 }
 
 fill_fifo &
