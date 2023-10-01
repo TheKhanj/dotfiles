@@ -133,6 +133,14 @@ enable_grc() {
 	. /etc/grc.sh
 }
 
+setup_fzf() {
+	source /usr/share/fzf/key-bindings.bash
+	source /usr/share/fzf/completion.bash
+	bind -m vi-command '"\C-f": "\C-z\ec\C-z"'
+	bind -m vi-insert '"\C-f": "\C-z\ec\C-z"'
+	bind -r "\ec"
+}
+
 setup_shell() {
 	init_aliases
 	init_colors
@@ -141,4 +149,5 @@ setup_shell() {
 	init_less_colors
 	enable_vi_mode
 	enable_grc
+	setup_fzf
 }
