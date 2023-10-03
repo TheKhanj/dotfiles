@@ -3,7 +3,8 @@
 window=${1:-3}
 target="$XORG_SESSION:$window"
 
-start_touchcursor() {
+bootstrap_keyboard() {
+	killall touchcursor
 	path="$HOME/.config/touchcursor"
 	rm "$path/touchcursor.conf"
 	configs="$(ls "$path")"
@@ -15,21 +16,11 @@ start_touchcursor() {
 		cmd="$(
 			cat <<EOF
 ln -sf "$path/$config" "$path/touchcursor.conf"
-touchcursor &
-sleep 1
+touchcursor & sleep 1 && setxkbmap custom
 EOF
 		)"
 		tmux send-keys -t "$target" "$cmd" C-m
 	done
-}
-
-set_layout() {
-	tmux send-keys -t "$target" "setxkbmap custom" C-m
-}
-
-bootstrap_keyboard() {
-	start_touchcursor
-	set_layout
 }
 
 bootstrap_keyboard
