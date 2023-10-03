@@ -48,7 +48,7 @@ super + bracketleft
   playerctl previous
 
 XF86AudioPrev
-  playerctl prev
+  playerctl previous
 
 super + bracketright
   playerctl next
