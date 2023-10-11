@@ -4,4 +4,4 @@
 
 as_root rm -rf /etc/fonts/
 as_root mkdir /etc/fonts
-as_root cp -r fonts/* /etc/fonts/
+as_root cp -r setup/fonts/* /etc/fonts/
