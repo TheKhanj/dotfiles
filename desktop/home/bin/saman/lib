@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+pack() {
+	npm run build:lib && cd dist-lib && npm pack && (ls | grep tgz | xargs realpath | xclip) && cd ..
+}
+
+install() {
+	npm i $(xclip -o)
+}
+
+i() {
+	install
+}
+
+$1

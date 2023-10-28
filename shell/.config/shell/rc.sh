@@ -84,6 +84,7 @@ init_exports() {
 	export PATH="$PATH:$HOME/.cargo/bin"
 	export PATH="$PATH:$HOME/.volta/bin"
 	export PATH="$PATH:$HOME/go/bin"
+	export PATH="$PATH:$HOME/bin/saman"
 
 	[ -n "$TMUX" ] && export TERM='tmux-256color'
 
