@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+start="$((${1:-0} * 10 + 1))"
+end="$((start + 9))"
+
+(
+	cat ~/bin/common_english |
+		sed -n "${start},${end}p" |
+		tr '\n' ' '
+	echo
+) | less

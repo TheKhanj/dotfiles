@@ -11,8 +11,8 @@ if [ $(ps aux | grep ffmpeg | wc -l) = "1" ]; then
 		-f x11grab \
 		-i :0.0 \
 		-f alsa \
-		-i hw:0 \
-		-c:v libx264 -r 30 -c:a flac \
+		-i default \
+		-preset ultrafast \
 		"$fullfilename" &
 
 	notify-send 'Started recording' "$fullfilename"
