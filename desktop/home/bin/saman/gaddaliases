@@ -1,3 +1,4 @@
 #/usr/bin/env sh
 glab alias set --shell iselect "glab issue list | fzf | awk '{ print $2 }' | xclip -selection clipboard"
 glab alias set --shell ciweb 'xdg-open "$(git remote -v | awk "{ print \$2 }" | head -n 1 | sed "s/\.git$/\/-\/pipelines/")"'
+glab alias set --shell swagger 'export host=$( [ "${1:-dev}" = "dev" ] && echo "dev.samank.ir" || echo "localhost"); xdg-open "http://${host}:$(cat .env | grep PORT | cut -d= -f 2)/api"'
