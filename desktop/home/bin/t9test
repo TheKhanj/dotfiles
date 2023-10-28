@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
-start="$((${1:-0} * 10 + 1))"
-end="$((start + 9))"
+count="${2:-10}"
+start="$((${1:-1} * count + 1))"
+end="$((start + count - 1))"
 
 (
 	cat ~/bin/common_english |
