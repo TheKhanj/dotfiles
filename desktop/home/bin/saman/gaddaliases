@@ -1,0 +1,2 @@
+#/usr/bin/env sh
+glab alias set --shell iselect "glab issue list | fzf | awk '{ print $2 }' | xclip -selection clipboard"
