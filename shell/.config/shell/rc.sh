@@ -94,8 +94,14 @@ init_exports() {
 	export LESS='-R -S -z 5'
 	export PAGER=less
 	export MANPAGER="sh -c 'sed -e s/.\\\\x08//g | bat -l man -p'"
-	export BLOCK_SIZE=human-readable
-	export BROWSER=chromium
+	export BLOCK_SIZE='human-readable'
+
+	if [ "$(hostname)" = "hayede" ]; then
+		export BROWSER="/usr/bin/google-chrome-stable"
+	else
+		export BROWSER="/usr/bin/chromium"
+	fi
+
 	export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 
 	export PHP_CS_FIXER_IGNORE_ENV=1
