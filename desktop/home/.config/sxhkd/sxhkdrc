@@ -61,3 +61,6 @@ super + backslash
 
 XF86AudioPlay
   playerctl play-pause
+
+super + n
+	xmouseless
