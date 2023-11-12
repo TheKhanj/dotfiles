@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+ncu -u
+
+name="$(cat package.json | jq '.name' -r)"
+npm i --cache /tmp/foo || exit 1
+
+npm audit fix
+
+tsc && git add package* && git commit -m "update dependencies" -m "https://git.sanfam.ir/sanfam/projects/saman/services/basic/basic-master-data-service/-/issues/9" && git push
