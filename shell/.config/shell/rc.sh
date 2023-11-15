@@ -19,7 +19,6 @@ is_laptop() {
 }
 
 init_aliases() {
-	alias r="source ranger"
 	alias f="source fcd"
 	alias ls="ls --color=auto"
 }

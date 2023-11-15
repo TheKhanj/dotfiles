@@ -6,7 +6,6 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" litecli &&
 	stow -vt "$HOME" mpv &&
 	stow -vt "$HOME" nvim &&
-	stow -vt "$HOME" ranger &&
 	stow -vt "$HOME" ripgrep &&
 	stow -vt "$HOME" root &&
 	stow -vt "$HOME" sqlite &&
