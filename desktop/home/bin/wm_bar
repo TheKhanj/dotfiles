@@ -15,10 +15,38 @@ w_battery() {
 	fi
 
 	if [ "$status" = "Charging" ]; then
-		printf "🔌 %s%% %s" "$charge" "$status"
+		printf "🔌 %s%% %s" "$charge"
 	else
-		printf "🔋 %s%% %s" "$charge" "$status"
+		printf "🔋 %s%% %s" "$charge"
 	fi
+}
+
+handsfree_bluetooth_cache="/tmp/handsfree_bluetooth_cache"
+
+w_bluetooth_battery() {
+	local last_modified_time=$(stat -c '%Y' "$handsfree_bluetooth_cache" || printf '0')
+	local now=$(date '+%s')
+	local _5_minutes=$(expr 5 '*' 60)
+	local ttl_threshold=$(expr $now - $_5_minutes)
+
+	if [ $last_modified_time -gt $ttl_threshold ]; then
+		cat "$handsfree_bluetooth_cache"
+		return
+	fi
+
+	local devices="$(bluetoothctl devices Connected | awk '{ print $2 }')"
+
+	local ret="$(for device in "$devices"; do
+		if [ -z "$device" ]; then
+			break
+		fi
+		level="$(bluetooth-headset-battery-level "$device" | grep -oE '[0-9]+%')"
+
+		echo "🎧 $level"
+	done | sed '/^$/d' | tr '\n' ' |')"
+
+	printf "%s" "$ret" >"$handsfree_bluetooth_cache"
+	cat "$handsfree_bluetooth_cache"
 }
 
 w_date() {
@@ -40,9 +68,9 @@ get_bar() {
 
 set_widgets() {
 	if is_laptop; then
-		widgets=('battery' 'date')
+		widgets=('bluetooth_battery' 'battery' 'date')
 	else
-		widgets=('date')
+		widgets=('bluetooth_battery' 'date')
 	fi
 }
 
