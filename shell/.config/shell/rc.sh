@@ -108,6 +108,8 @@ init_exports() {
 
 	export HISTSIZE=10000
 	export HISTFILESIZE=10000
+
+	export NNN_COLORS='#0a1b2c3d;1234'
 }
 
 init_less_colors() {
