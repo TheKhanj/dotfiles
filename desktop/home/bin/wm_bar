@@ -2,15 +2,14 @@
 
 . $HOME/.config/shell/rc.sh
 
-seperator=' | '
+separator=' | '
 widgets=()
 
 w_battery() {
-	# Change BAT1 to whatever your battery is identified as. Typically BAT0 or BAT1
-	charge=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
-	status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+	charge="$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)"
+	status="$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)"
 
-	if [ -z $status ]; then
+	if [ -z "$status" ]; then
 		return
 	fi
 
@@ -54,15 +53,21 @@ w_date() {
 }
 
 get_bar() {
-	index=0
+	local index=0
 	for widget in ${widgets[@]}; do
-		if [ $index -ne 0 ]; then
-			printf "%s" "$seperator"
+		local widget_output="$(w_$widget)"
+
+		if [ -z "$widget_output" ]; then
+			continue
 		fi
 
-		w_$widget
+		if [ $index -ne 0 ]; then
+			printf "%s" "$separator"
+		fi
 
-		index=$((index + 1))
+		printf "%s" "$widget_output"
+
+		index=$(expr $index + 1)
 	done
 }
 
