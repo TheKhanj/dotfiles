@@ -35,20 +35,19 @@ w_bluetooth_battery() {
 
 	local devices="$(bluetoothctl devices Connected | awk '{ print $2 }')"
 
-	local ret="$(for device in "$devices"; do
+	local ret="$(while read -r device; do
 		if [ -z "$device" ]; then
 			continue
 		fi
 
-		level="$(bluetooth-headset-battery-level "$device" | grep -oE '[0-9]+%')"
-		is_not_headset=$([ -z "$level" ])
+		level="$(bluetooth-headset-battery-level "$device" 2>/dev/null | grep -oE '[0-9]+%')"
 
-		if [ $is_not_headset -ne 0 ]; then
+		if [ -z "$level" ]; then
 			continue
 		fi
 
 		echo "🎧 $level"
-	done | sed '/^$/d' | tr '\n' ' |')"
+	done <<<"$devices" | sed '/^$/d' | tr '\n' ' |')"
 
 	printf "%s" "$ret" >"$handsfree_bluetooth_cache"
 	cat "$handsfree_bluetooth_cache"
