@@ -37,9 +37,15 @@ w_bluetooth_battery() {
 
 	local ret="$(for device in "$devices"; do
 		if [ -z "$device" ]; then
-			break
+			continue
 		fi
+
 		level="$(bluetooth-headset-battery-level "$device" | grep -oE '[0-9]+%')"
+		is_not_headset=$([ -z "$level" ])
+
+		if [ $is_not_headset -ne 0 ]; then
+			continue
+		fi
 
 		echo "🎧 $level"
 	done | sed '/^$/d' | tr '\n' ' |')"
