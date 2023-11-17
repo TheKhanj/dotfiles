@@ -1,5 +1,7 @@
 [ -n "$RC_LOADED" ] && return || RC_LOADED=1
 
+source $HOME/.config/shell/nnn.sh
+
 as_root() {
 	local admin
 	if which doas >/dev/null; then
