@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+card_name=$(pacmd list-cards | grep name:  | cut -d '<' -f 2 | cut -d '>' -f 1 | tail -n 1 | tr -d '\n')
+pacmd set-card-profile $card_name handsfree_head_unit
