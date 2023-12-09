@@ -40,3 +40,5 @@
 [credential "https://git.sanfam.ir/"]
 	username = PKhanjankhani
 	helper = "cache --timeout 86400"
+[pull]
+	rebase = false
