@@ -1,5 +1,5 @@
 /xfce4/.config/terminal/accels.scm
 /xfce4/.config/xfconf/*
 /mpv/.config/mpv/watch_later/
-/cow/.cow/stat
+/cow/.cow/stat*
 /tags
