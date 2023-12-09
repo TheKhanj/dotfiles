@@ -3,8 +3,27 @@
 ncu -u
 
 name="$(cat package.json | jq '.name' -r)"
+echo "$name"
+version="$(cat package.json | jq '.version' -r)"
+major="$(echo "$version" | cut -d'.' -f 1)"
+minor="$(echo "$version" | cut -d'.' -f 2)"
+patch="$(echo "$version" | cut -d'.' -f 3)"
+new_version="$major.$minor.$((patch + 1))"
+
+if [ -z "$(git diff package*)" ]; then
+	echo 'no package upgraded'
+	exit 1
+fi
+
+mv package.json{,_} && cat package.json_ | jq ".version = \"$new_version\"" >package.json && rm package.json_
+
+if [ -n "$(git log HEAD..origin/HEAD)" ]; then
+	echo 'has not pushed yet'
+	exit 1
+fi
+
 npm i --cache /tmp/foo || exit 1
 
 npm audit fix
 
-tsc && git add package* && git commit -m "update dependencies" -m "https://git.sanfam.ir/sanfam/projects/saman/services/basic/basic-master-data-service/-/issues/9" && git push
+tsc && git add package* && git commit -m "update dependencies" -m "https://git.sanfam.ir/sanfam/projects/saman/others/-/issues/79" && git push
