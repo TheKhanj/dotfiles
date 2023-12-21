@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+all_projects=$(glab api projects --paginate | jq '.[] | {name, id}' -c)
+project_name=$(git remote -v | rev | cut -d '/' -f1 | rev | cut -d ' ' -f 1 | cut -d'.' -f1)
+project_id=$(echo "$all_projects" | grep "$project_name" | jq '.id')
+pipeline_id=$(glab ci list | sed -n '3p' | grep -o '#[0-9]\+' | head -n 1 | grep -o '[0-9]\+')
+job_id=$(glab api projects/$project_id/jobs --paginate | jq '.[] | {id, status}' -c | grep manual | head -n 1 | jq '.id')
+glab ci trigger $job_id
