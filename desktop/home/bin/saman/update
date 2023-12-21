@@ -15,7 +15,8 @@ if [ -z "$(git diff package*)" ]; then
 	exit 1
 fi
 
-mv package.json{,_} && cat package.json_ | jq ".version = \"$new_version\"" >package.json && rm package.json_
+mv package.json{,_} && cat package.json_ | jq ".version = \"$new_version\" | .dependencies.\"reflect-metadata\"=\"^0.1.x\"" >package.json && rm package.json_
+cat package.json | jq ''
 
 if [ -n "$(git log HEAD..origin/HEAD)" ]; then
 	echo 'has not pushed yet'
@@ -26,4 +27,4 @@ npm i --cache /tmp/foo || exit 1
 
 npm audit fix
 
-tsc && git add package* && git commit -m "update dependencies" -m "https://git.sanfam.ir/sanfam/projects/saman/others/-/issues/79" && git push
+tsc && git add package* && git commit -m "update dependencies" -m "https://git.sanfam.ir/sanfam/projects/saman/others/-/issues/84" && git push
