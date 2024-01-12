@@ -23,6 +23,7 @@ is_laptop() {
 init_aliases() {
 	alias f="source fcd"
 	alias ls="ls --color=auto"
+	alias yt="ytfzf -t --async-thumbnails --keep-cache --preview-side=right"
 }
 
 init_colors() {
