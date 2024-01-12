@@ -1,24 +1,26 @@
 #!/usr/bin/env sh
+tun0=tun0
 start() {
-	sudo ip tuntap add mode tun dev tun0
-	sudo ip addr add 192.168.2.1/24 dev tun0
-	sudo ip link set dev tun0 up
+	sudo ip tuntap add mode tun dev $tun0
+	sudo ip addr add 192.168.2.1/24 dev $tun0
+	sudo ip link set dev $tun0 up
 
 	sudo ip route del default
 	sudo ip route add default via 192.168.2.1
 	# skip vpn servers
 	dev='wlp3s0'
+	sudo ip route add 1.1.1.1 via 192.168.1.1
 	sudo ip route add 188.121.112.154 via 192.168.1.1
 	sudo ip route add 188.121.117.72 via 192.168.1.1
 	sudo ip route add 37.32.7.92 via 192.168.1.1
 	# sharifi
 	sudo ip route add 79.132.128.131 via 192.168.1.1
 
-	sudo tun2socks -device tun0 -proxy socks5://127.0.0.1:10808 -interface $dev
+	sudo tun2socks -device $tun0 -proxy socks5://127.0.0.1:10808 -interface $dev
 }
 
 stop() {
-	sudo ip tuntap del dev tun0 mode tun
+	sudo ip tuntap del dev $tun0 mode tun
 }
 
 start
