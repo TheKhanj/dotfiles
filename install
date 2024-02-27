@@ -13,7 +13,6 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" mycli &&
 	stow -vt "$HOME" clang &&
 	stow -vt "$HOME" info &&
-	stow -vt "$HOME" cow &&
 	stow -vt "$HOME" shell ||
 	exit 1
 
