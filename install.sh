@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-cd desktop && ./install.sh && cd - >/dev/null || exit 1
-
 stow -vt "$HOME" git &&
 	stow -vt "$HOME" litecli &&
 	stow -vt "$HOME" mpv &&
@@ -18,3 +16,5 @@ stow -vt "$HOME" git &&
 	stow -vt "$HOME" cow &&
 	stow -vt "$HOME" shell ||
 	exit 1
+
+cd desktop && ./install.sh && cd - >/dev/null || exit 1
