@@ -21,9 +21,10 @@ is_laptop() {
 }
 
 init_aliases() {
-	alias f="source fcd"
 	alias ls="ls --color=auto"
 	alias yt='ytfzf -t --async-thumbnails --keep-cache --preview-side=right --ytdl-pref="bestvideo[height<=?1080][fps<=?30][vcodec!~=\"vp0?9\"]+bestaudio/best"'
+	alias cpy='xclip -selection clipboard'
+	alias pst='xclip -o -selection clipboard'
 }
 
 init_colors() {
