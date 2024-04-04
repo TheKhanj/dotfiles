@@ -7,10 +7,12 @@ sleep 1
 # gemini back half
 # v4l2loopback-ctl set-caps /dev/video2 "YU12:1728x2304"
 # gemini front full
-v4l2loopback-ctl set-caps /dev/video2 "YU12:1512x2016"
+# v4l2loopback-ctl set-caps /dev/video2 "YU12:1512x2016"
+v4l2loopback-ctl set-caps /dev/video2 "YU12:2016x1512"
 
 droidcam &
 echo -n "Waiting for droidcam to connect, press any key to continue..." && read
 
 ffplay /dev/video2
+killall droicam
 sudo modprobe -r v4l2loopback

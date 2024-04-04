@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+stow -vt "$HOME" git &&
+	stow -vt "$HOME" litecli &&
+	stow -vt "$HOME" mpv &&
+	stow -vt "$HOME" nvim &&
+	stow -vt "$HOME" ripgrep &&
+	stow -vt "$HOME" root &&
+	stow -vt "$HOME" sqlite &&
+	stow -vt "$HOME" tmux &&
+	stow -vt "$HOME" xfce4 &&
+	stow -vt "$HOME" zathura &&
+	stow -vt "$HOME" mycli &&
+	stow -vt "$HOME" clang &&
+	stow -vt "$HOME" info &&
+	stow -vt "$HOME" shell ||
+	exit 1
+
+cd desktop && ./install.sh && cd - >/dev/null || exit 1
+
+setup_nnn() {
+	local plugins=(fzcd dragdrop cdpath)
+	local plugins_installed=1
+	for plugin in "${plugins[@]}"; do
+		local path="$HOME/.config/nnn/plugins/$plugin"
+
+		[ -f "$path" ] || {
+			plugins_installed=0
+			break
+		}
+	done
+
+	[ $plugins_installed -eq 1 ] && return
+
+	sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+	echo 'nnn plugins installed'
+}
+
+setup_nnn
