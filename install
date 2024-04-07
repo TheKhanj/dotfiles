@@ -1,20 +1,37 @@
 #!/usr/bin/env bash
 
+run() {
+	[ $IS_GLOBAL -eq 0 ] && $@ || sudo $@
+	return $?
+}
+
 setup_symlinks() {
 	local base="$1"
 
 	local paths="$(find "$base" -type f | sort)"
 
+	local base_install_dir
+	[ "$2" != 'is_global' ] && base_install_dir=$HOME || base_install_dir=/etc
+	[ "$2" = 'is_global' ] && IS_GLOBAL=1 || IS_GLOBAL=0
+
 	while read path; do
 		local dir="$(dirname "$path" | sed "s|$base||")"
-		mkdir -p "$HOME/$dir" >/dev/null 2>&1
+		run mkdir -p "$base_install_dir/$dir" >/dev/null 2>&1
 
-		ln -sf "$PWD/$path" "$HOME/$dir"
+		run ln -sf "$PWD/$path" "$base_install_dir/$dir" >/dev/null 2>&1 &&
+			echo "linked $base_install_dir/$dir to $PWD/$path" >&2 ||
+			{
+				echo "linking $base_install_dir/$dir to $PWD/$path failed!" >&2
+				exit 1
+			}
 	done <<<"$paths"
 }
 
 main() {
-	setup_symlinks "links"
+	setup_symlinks user
+	setup_symlinks global is_global
+
+	sudo locale-gen
 }
 
 main
