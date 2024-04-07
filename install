@@ -27,9 +27,28 @@ setup_symlinks() {
 	done <<<"$to_files"
 }
 
+setup_nnn() {
+	local plugins=(fzcd dragdrop cdpath)
+	local plugins_installed=1
+	for plugin in "${plugins[@]}"; do
+		local path="$HOME/.config/nnn/plugins/$plugin"
+
+		[ -f "$path" ] || {
+			plugins_installed=0
+			break
+		}
+	done
+
+	[ $plugins_installed -eq 1 ] && return
+
+	sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+	echo 'nnn plugins installed'
+}
+
 main() {
 	setup_symlinks user
 	setup_symlinks global is_global
+	setup_nnn
 
 	sudo locale-gen
 }

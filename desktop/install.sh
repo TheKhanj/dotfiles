@@ -5,4 +5,4 @@
 . $HOME/dotfiles/desktop/setup/setup_themes.sh
 . $HOME/dotfiles/desktop/setup/setup_keyboard.sh
 
-stow -vt ~ home
+stow -vt "$HOME" home
