@@ -1,44 +1,30 @@
 [user]
 	email = pooyankhan@gmail.com
 	name = Pooyan Khanjankhani
-
-# [http]
-#   proxy = socks://127.0.0.1:10808
-
+[pull]
+	rebase = false
 [merge]
 	tool = nvimmerge
-
-[mergetool]
-	prompt = false
-
-[mergetool "nvimmerge"]
-	cmd = nvim -d
-
 [diff]
 	tool = nvimdiff
-
+[mergetool]
+	prompt = false
+[mergetool "nvimmerge"]
+	cmd = nvim -d
 [difftool]
 	prompt = false
 	trustExitCode = true
-
 [difftool "nvimdiff"]
 	cmd = nvim -d $LOCAL $REMOTE
-
 [credential]
 	helper = store
-
 [http "https://git.piranpardaz.ir/"]
 	sslVerify = false
-
 [credential "https://git.piranpardaz.ir/"]
 	username = PKhanjankhani
 	helper = "cache --timeout 86400"
-
 [http "https://git.sanfam.ir/"]
 	sslVerify = false
-
 [credential "https://git.sanfam.ir/"]
 	username = PKhanjankhani
 	helper = "cache --timeout 86400"
-[pull]
-	rebase = false

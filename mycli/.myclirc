@@ -1,4 +1,0 @@
-# vi: ft=dosini
-[main]
-table_format = tsv
-key_bindings = vi

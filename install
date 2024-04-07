@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+setup_symlinks() {
+	local base="$1"
+
+	local paths="$(find "$base" -type f | sort)"
+
+	while read path; do
+		local dir="$(dirname "$path" | sed "s|$base||")"
+		mkdir -p "$HOME/$dir" >/dev/null 2>&1
+
+		ln -sf "$PWD/$path" "$HOME/$dir"
+	done <<<"$paths"
+}
+
+main() {
+	setup_symlinks "links"
+}
+
+main
