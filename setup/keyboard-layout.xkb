@@ -1,7 +1,3 @@
-// My custom keyboard layout
-// Just copy this file in /usr/share/X11/xkb/symbols
-// Use it in your .xinitrc with `setxkbmap custom`
-
 xkb_symbols "pc" {
     name[Group1]= "English (US)";
     name[Group2]= "Persian (IR)";
@@ -307,3 +303,5 @@ xkb_symbols "pc" {
         actions=[ NoAction(), NoAction() ]
     };
 };
+
+// vi: ft=xkb

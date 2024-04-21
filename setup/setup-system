@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+get_host() {
+	cat /etc/hostname | tr -d '\n'
+}
+
+setup_xresources() {
+	local host="$(get_host)"
+
+	if [ "$host" = "slut" ]; then
+		cat >"$HOME/.Xresources" <<-EOF
+			Xft.dpi: 180
+		EOF
+	else
+		cat >"$HOME/.Xresources" <<-EOF
+			Xft.dpi: 100
+		EOF
+	fi
+}
+
+setup_screen_scale() {
+	local host="$(get_host)"
+
+	[ "$host" != "slut" ] && return
+
+	sudo tee /etc/profile.d/screen-scale.sh <<-EOF
+		export QT_AUTO_SCREEN_SCALE_FACTOR=1
+		export GDK_SCALE=1.5
+		export GDK_DPI_SCALE=1
+	EOF
+}
+
+setup_xorg() {
+	setup_xresources
+	setup_screen_scale
+}
+
+setup_xorg

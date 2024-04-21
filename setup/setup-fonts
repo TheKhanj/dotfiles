@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+sudo rm -rf /etc/fonts/
+sudo mkdir /etc/fonts
+sudo cp -r ./setup/fonts/* /etc/fonts/

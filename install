@@ -2,14 +2,14 @@
 
 execute_with_privilege() {
 	local base_dir="$1"
-	[ "$base_dir" = 'root' ] && sudo ${@:2} || ${@:2}
+	[ "$base_dir" = 'system' ] && sudo ${@:2} || ${@:2}
 	return $?
 }
 
 get_destination_dir() {
 	local base_dir="$1"
 
-	[ $base_dir = 'root' ] && echo -n "/" || echo -n "$HOME"
+	[ $base_dir = 'system' ] && echo -n "/" || echo -n "$HOME"
 }
 
 assert_destination_directories() {
@@ -30,29 +30,14 @@ setup_symlinks() {
 	execute_with_privilege "$base_dir" stow -vt "$(get_destination_dir "$base_dir")" "$base_dir"
 }
 
-setup_nnn() {
-	local plugins=(fzcd dragdrop cdpath)
-	local plugins_installed=1
-
-	for plugin in "${plugins[@]}"; do
-		local path="$HOME/.config/nnn/plugins/$plugin"
-
-		[ -f "$path" ] || {
-			plugins_installed=0
-			break
-		}
-	done
-
-	[ $plugins_installed -eq 1 ] && return
-
-	sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
-	echo 'nnn plugins installed'
-}
-
 main() {
 	setup_symlinks user
-	setup_symlinks root
-	setup_nnn
+	setup_symlinks system
+
+	./setup/setup-nnn
+	./setup/setup-keyboard
+	./setup/setup-fonts
+	./setup/setup-system
 
 	sudo locale-gen
 }
