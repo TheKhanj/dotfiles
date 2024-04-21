@@ -1,35 +1,39 @@
 #!/usr/bin/env bash
 
-run() {
-	[ $IS_GLOBAL -eq 0 ] && $@ || sudo $@
+execute_with_privilege() {
+	local base_dir="$1"
+	[ "$base_dir" = 'root' ] && sudo ${@:2} || ${@:2}
 	return $?
 }
 
+get_destination_dir() {
+	local base_dir="$1"
+
+	[ $base_dir = 'root' ] && echo -n "/" || echo -n "$HOME"
+}
+
+assert_destination_directories() {
+	local base_dir="$1"
+	local dest_dir=$(get_destination_dir "$base_dir")
+
+	find "$base_dir" -type d | while read dir; do
+		local path="$dest_dir/$(echo "$dir" | sed "s/$base_dir//")"
+
+		execute_with_privilege "$base_dir" mkdir -p "$path"
+	done
+}
+
 setup_symlinks() {
-	local to_base="$1"
-	local to_files="$(find "$to_base" -type f | sort | sed '/^$/d')"
+	local base_dir="$1"
 
-	local install_dir
-	[ "$2" != 'is_global' ] && install_dir=$HOME || install_dir=/etc
-	[ "$2" = 'is_global' ] && IS_GLOBAL=1 || IS_GLOBAL=0
-
-	while read -r to_file; do
-		[ -z "$to_file" ] && continue
-
-		local to_dir="$(dirname "$to_file" | sed "s/$to_base//")"
-		local to_filename="$(basename $to_file)"
-
-		run mkdir -p "$install_dir/$to_dir" >/dev/null 2>&1
-
-		local from_file="$install_dir/$to_dir/$to_filename"
-		echo "linking $from_file to $to_file..." >&2
-		run ln -sf $PWD/$to_file $from_file || exit 1
-	done <<<"$to_files"
+	assert_destination_directories "$base_dir"
+	execute_with_privilege "$base_dir" stow -vt "$(get_destination_dir "$base_dir")" "$base_dir"
 }
 
 setup_nnn() {
 	local plugins=(fzcd dragdrop cdpath)
 	local plugins_installed=1
+
 	for plugin in "${plugins[@]}"; do
 		local path="$HOME/.config/nnn/plugins/$plugin"
 
@@ -47,7 +51,7 @@ setup_nnn() {
 
 main() {
 	setup_symlinks user
-	setup_symlinks global is_global
+	setup_symlinks root
 	setup_nnn
 
 	sudo locale-gen
