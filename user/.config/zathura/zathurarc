@@ -7,3 +7,5 @@ map [fullscreen] ; feedkeys :
 
 map i set recolor
 map [fullscreen] i set recolor
+
+# vi: ft=sh

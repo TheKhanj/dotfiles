@@ -24,3 +24,5 @@
     foreground = "#ffffff"
     frame_color = "#ff0000"
     timeout = 7
+
+# vi: ft=dosini

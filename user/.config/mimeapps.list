@@ -192,3 +192,5 @@ x-scheme-handler/qute=org.qutebrowser.qutebrowser.desktop;
 x-scheme-handler/tg=telegramdesktop.desktop;
 x-scheme-handler/mailto=google-chrome.desktop
 application/pdf=org.pwmt.zathura-pdf-poppler.desktop;
+
+# vi: ft=dosini

@@ -30,7 +30,7 @@
   <property name="misc-show-unsafe-paste-dialog" type="bool" value="false"/>
   <property name="misc-right-click-action" type="string" value="TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU"/>
   <property name="scrolling-bar" type="string" value="TERMINAL_SCROLLBAR_NONE"/>
-  <property name="scrolling-on-output" type="bool" value="true"/>
+  <property name="scrolling-on-output" type="bool" value="false"/>
   <property name="scrolling-on-keystroke" type="bool" value="false"/>
   <property name="font-use-system" type="bool" value="false"/>
   <property name="font-allow-bold" type="bool" value="true"/>
