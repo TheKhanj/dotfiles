@@ -46,6 +46,7 @@ main() {
 	./setup/setup-system
 
 	sudo locale-gen
+	ln -sf $PWD/nvim/ $HOME/.config/nvim
 }
 
 main
