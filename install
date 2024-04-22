@@ -2,8 +2,13 @@
 
 execute_with_privilege() {
 	local base_dir="$1"
-	[ "$base_dir" = 'system' ] && sudo ${@:2} || ${@:2}
-	return $?
+	[ "$base_dir" = 'system' ] && {
+		sudo ${@:2}
+		return $?
+	} || {
+		${@:2}
+		return $?
+	}
 }
 
 get_destination_dir() {
@@ -19,7 +24,7 @@ assert_destination_directories() {
 	find "$base_dir" -type d | while read dir; do
 		local path="$dest_dir/$(echo "$dir" | sed "s/$base_dir//")"
 
-		execute_with_privilege "$base_dir" mkdir -p "$path"
+		execute_with_privilege "$base_dir" mkdir -p "$path" 2>/dev/null
 	done
 }
 
@@ -27,12 +32,13 @@ setup_symlinks() {
 	local base_dir="$1"
 
 	assert_destination_directories "$base_dir"
-	execute_with_privilege "$base_dir" stow -vt "$(get_destination_dir "$base_dir")" "$base_dir"
+	execute_with_privilege "$base_dir" stow -t "$(get_destination_dir "$base_dir")" "$base_dir"
+	return $?
 }
 
 main() {
-	setup_symlinks user
-	setup_symlinks system
+	setup_symlinks user || exit 1
+	setup_symlinks system || exit 1
 
 	./setup/setup-nnn
 	./setup/setup-keyboard
