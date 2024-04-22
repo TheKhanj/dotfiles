@@ -1,0 +1,8 @@
+[Unit]
+Description=Battery Check Service
+
+[Service]
+ExecStart=battery-check
+
+[Install]
+RequiredBy=desktop.target

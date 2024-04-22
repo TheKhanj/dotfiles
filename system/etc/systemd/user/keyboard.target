@@ -1,0 +1,7 @@
+[Unit]
+Description=Keyboard Target
+After=default.target
+Requires=touchcursor.target keyboard-layout.service
+
+[Install]
+RequiredBy=desktop.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Picom Service
+
+[Service]
+ExecStart=/usr/bin/picom --config %h/.config/picom.conf
+
+[Install]
+RequiredBy=desktop.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Touch Cursor Service
+After=default.target
+
+[Install]
+RequiredBy=keyboard.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Dunst Service
+
+[Service]
+ExecStart=/usr/bin/dunst
+
+[Install]
+WantedBy=desktop.target

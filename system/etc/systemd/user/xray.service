@@ -1,0 +1,8 @@
+[Unit]
+Description=Xray Service
+
+[Service]
+ExecStart=/usr/bin/xray -c %h/vpn/ir4.json
+
+[Install]
+RequiredBy=desktop.target

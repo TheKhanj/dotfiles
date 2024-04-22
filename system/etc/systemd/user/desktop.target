@@ -1,0 +1,5 @@
+[Unit]
+Description=Desktop Target
+After=default.target
+Requires=sxhkd.service
+Wants=keyboard.target wallpaper.target dunst.service picom.service nm-applet.service battery-check.service
