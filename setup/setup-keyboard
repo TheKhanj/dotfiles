@@ -10,6 +10,15 @@ get_keyboards() {
 		cut -d\" -f2
 }
 
+sanitize_keyboard_name() {
+	local keyboard_name="$1"
+
+	echo "$keyboard_name" |
+		sed 's/ //g' |
+		sed 's/\///g' |
+		convconv -t kebab -a
+}
+
 create_touchcursor_config() {
 	local keyboards="$(get_keyboards)"
 	local path="$HOME/.config/touchcursor"
@@ -18,12 +27,7 @@ create_touchcursor_config() {
 
 	echo "$keyboards" | while read -r keyboard_name; do
 		local escaped_name="$(echo "$keyboard_name" | sed 's/\//\\\//g')"
-		local config_file="$(
-			echo "$keyboard_name" |
-				sed 's/ //g' |
-				sed 's/\///g' |
-				convconv -t kebab -a
-		)"
+		local config_file="$(sanitize_keyboard_name "$keyboard_name")"
 
 		echo "detected keyboard: $keyboard_name" >&2
 
@@ -33,9 +37,36 @@ create_touchcursor_config() {
 	done
 }
 
+create_systemd_files() {
+	local dir="$HOME/.config/touchcursor"
+	local configs="$(
+		ls "$dir" |
+			grep -v 'touchcursor.conf$'
+	)"
+
+	echo "$configs" | while read -r config; do
+		local name="$(echo -n "$config" | sed 's/.conf$//')"
+
+		local path="/etc/systemd/user/touchcursor-$name.service"
+		sudo mkdir -p "$(dirname "$path")"
+
+		sudo tee "$path" >/dev/null <<-EOF
+			[Unit]
+			Description=Touch Cursor Service - ($name)
+
+			[Service]
+			ExecStart=sh -c 'ln -sf "$dir/$config" "$dir/touchcursor.conf"; /usr/bin/touchcursor;'
+
+			[Install]
+			RequiredBy=touchcursor.target
+		EOF
+	done
+}
+
 copy_layout() {
 	sudo cp "./setup/keyboard-layout.xkb" '/usr/share/X11/xkb/symbols/custom'
 }
 
 create_touchcursor_config
 copy_layout
+create_systemd_files
