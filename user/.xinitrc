@@ -1,5 +1,6 @@
 xrdb -merge "$HOME/.Xresources"
 systemctl --user start desktop.target
-exec i3
+i3
+systemctl --user stop desktop.target
 
 # vi: ft=sh

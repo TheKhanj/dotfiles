@@ -1,9 +1,6 @@
 [Unit]
 Description=Wallpaper Service
+BindsTo=desktop.target
 
 [Service]
-Type=oneshot
 ExecStart=/usr/bin/nitrogen --restore
-
-[Install]
-RequiredBy=desktop.target

@@ -1,10 +1,7 @@
 [Unit]
 Description=Keyboard Layout Service
 After=touchcursor.target
+BindsTo=keyboard.target
 
 [Service]
-Type=oneshot
 ExecStart=/usr/bin/sh -c 'sleep 1; /usr/bin/setxkbmap custom;'
-
-[Install]
-RequiredBy=keyboard.target

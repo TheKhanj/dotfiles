@@ -53,12 +53,10 @@ create_systemd_files() {
 		sudo tee "$path" >/dev/null <<-EOF
 			[Unit]
 			Description=Touch Cursor Service - ($name)
+			BindsTo=touchcursor.target
 
 			[Service]
 			ExecStart=sh -c 'ln -sf "$dir/$config" "$dir/touchcursor.conf"; /usr/bin/touchcursor;'
-
-			[Install]
-			RequiredBy=touchcursor.target
 		EOF
 	done
 }

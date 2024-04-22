@@ -1,8 +1,6 @@
 [Unit]
 Description=Dunst Service
+BindsTo=desktop.target
 
 [Service]
 ExecStart=/usr/bin/dunst
-
-[Install]
-WantedBy=desktop.target
