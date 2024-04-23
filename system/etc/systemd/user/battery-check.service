@@ -3,4 +3,4 @@ Description=Battery Check Service
 BindsTo=desktop.target
 
 [Service]
-ExecStart=battery-check
+ExecStart=/usr/bin/battery-check
