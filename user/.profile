@@ -32,6 +32,7 @@ __setup_grc() {
 	. /etc/grc.sh
 }
 
+. /etc/profile
 __setup_path
 __setup_apps
 __setup_aliases
