@@ -17,10 +17,9 @@ Print
 shift + Print
 	screenrecord
 super + slash
-	switch_display
+	switch-display
 super + shift + t
-	dmenu -p 'Translate:' < ~/bin/english_words \
-		| xargs -r fastdic
+	translate
 super + z
 	slock
 super + semicolon
@@ -28,7 +27,7 @@ super + semicolon
 super + colon
 	dunstctl history-pop
 super + apostrophe
-	dmenu_emoji
+	dmenu-emoji
 super + bracketleft
 	playerctl previous
 XF86AudioPrev

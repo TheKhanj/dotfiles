@@ -10,7 +10,7 @@ floating_modifier $mod
 bindsym $mod+q kill
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+q exec "exit_wm exit"
+bindsym $mod+Shift+q exec "/usr/bin/wm-exit exit"
 
 # change focus
 bindsym $mod+h focus left
