@@ -59,6 +59,21 @@ create_systemd_files() {
 			ExecStart=sh -c 'ln -sf "$dir/$config" "$dir/touchcursor.conf"; /usr/bin/touchcursor;'
 		EOF
 	done
+
+	local target_file=/etc/systemd/user/touchcursor.target
+	sudo tee $target_file >/dev/null <<-EOF
+		[Unit]
+		Description=Touch Cursor Service
+		BindsTo=keyboard.target
+	EOF
+	local reqs="$(
+		echo "$configs" | while read -r config; do
+			local name="touchcursor-$(echo -n "$config" | sed 's/.conf$//').service"
+			echo -n "$name "
+		done
+	)"
+
+	echo "Requires=$reqs" | sudo tee -a $target_file >/dev/null
 }
 
 copy_layout() {

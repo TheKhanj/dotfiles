@@ -1,3 +1,0 @@
-[Unit]
-Description=Touch Cursor Service
-BindsTo=keyboard.target
