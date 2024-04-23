@@ -1,6 +1,5 @@
 [Unit]
 Description=Keyboard Target
-After=default.target
 Requires=touchcursor.target keyboard-layout.service
 PartOf=touchcursor.target keyboard-layout.service
 BindsTo=desktop.target

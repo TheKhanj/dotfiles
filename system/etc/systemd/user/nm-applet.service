@@ -4,3 +4,4 @@ BindsTo=desktop.target
 
 [Service]
 ExecStart=/usr/bin/nm-applet
+Environment='DISPLAY=:0'

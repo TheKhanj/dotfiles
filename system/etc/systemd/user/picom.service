@@ -4,3 +4,4 @@ BindsTo=desktop.target
 
 [Service]
 ExecStart=/usr/bin/picom --config %h/.config/picom.conf
+Environment='DISPLAY=:0'
