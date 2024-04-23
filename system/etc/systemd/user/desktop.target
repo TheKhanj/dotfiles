@@ -2,5 +2,5 @@
 Description=Desktop Target
 After=default.target
 Requires=sxhkd.service
-Wants=keyboard.target wallpaper.service dunst.service picom.service nm-applet.service battery-check.service xray.service
-PartOf=keyboard.target wallpaper.service dunst.service picom.service nm-applet.service battery-check.service xray.service
+Wants=keyboard.target wallpaper.service dunst.service picom.service nm-applet.service battery-check.service xray.service desktop.timer
+PartOf=keyboard.target wallpaper.service dunst.service picom.service nm-applet.service battery-check.service xray.service desktop.timer

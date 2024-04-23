@@ -1,6 +1,7 @@
 [Unit]
 Description=Battery Check Service
-BindsTo=desktop.target
+Wants=desktop.timer
 
 [Service]
+Type=oneshot
 ExecStart=/usr/bin/battery-check
