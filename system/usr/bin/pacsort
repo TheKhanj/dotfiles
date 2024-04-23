@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 pacman -Qi |
 	grep -E '(^Name|^Installed Size)' |
 	paste - - -d '\t' |

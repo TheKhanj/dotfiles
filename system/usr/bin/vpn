@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 tun0=tun0
 start() {
 	sudo ip tuntap add mode tun dev $tun0

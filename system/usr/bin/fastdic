@@ -1,4 +1,5 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
+
 res=$(curl -sS 'https://fastdic.com/suggestions' \
 	-H 'Content-Type: application/json' \
 	-H 'Referer: https://fastdic.com/word/panacea' \

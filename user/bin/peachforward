@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-eth=enp0s25
-wlan=wlp3s0
-sudo iptables -t nat -A POSTROUTING -o $wlan -j MASQUERADE
-sudo iptables -A FORWARD -i $eth -o $wlan -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -i $wlan -o $eth -j ACCEPT

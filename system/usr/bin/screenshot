@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 dir=~/Pictures/sc
 mkdir -p "$dir"
 

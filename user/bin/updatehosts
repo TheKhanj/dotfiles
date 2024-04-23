@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-doas sh -c "cat /etc/hosts.d/* > /etc/hosts"

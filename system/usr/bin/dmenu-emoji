@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-emoji="$(cat "$HOME/bin/emojis" |
+emoji="$(cat "/usr/share/emoji/emoji.db" |
 	dmenu -l 10 -fn "Apple Color Emoji" |
 	awk '{ print $1 }')"
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 dir=~/Videos/record
 mkdir -p "$dir"
 
