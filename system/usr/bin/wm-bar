@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-. $HOME/.config/shell/rc.sh
-
 separator=' | '
 widgets=()
 
@@ -77,7 +75,7 @@ get_bar() {
 }
 
 set_widgets() {
-	if is_laptop; then
+	if islaptop; then
 		widgets=('bluetooth_battery' 'battery' 'date')
 	else
 		widgets=('bluetooth_battery' 'date')

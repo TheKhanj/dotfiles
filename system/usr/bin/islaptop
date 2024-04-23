@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+host="$(cat /etc/hostname | tr -d '\n')"
+
+[ "$host" = 'peach' ] ||
+	[ "$host" = 'buddy' ] ||
+	[ "$host" = 'slut' ]
+
+exit $?
