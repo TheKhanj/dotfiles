@@ -2,14 +2,8 @@ set $mod Mod4
 font pango:Ubuntu Mono 8
 
 default_border pixel 1
-
-# Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-
-# kill focused window
 bindsym $mod+q kill
-
-# exit i3 (logs you out of your X session)
 bindsym $mod+Shift+q exec "/usr/bin/wm-exit exit"
 
 # change focus
@@ -18,93 +12,70 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# move focused window
+# move window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# split in horizontal orientation
+# split
 bindsym $mod+v split h
-
-# split in vertical orientation
 bindsym $mod+s split v
-
-# enter fullscreen mode for the focused container
 bindsym $mod+m fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+g layout stacking
+# container layout
 bindsym $mod+t layout tabbed
-bindsym $mod+a layout toggle split
+bindsym $mod+a layout toggle
 
-bindsym $mod+b bar mode toggle
-
-# toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
-
-# focus the parent or child container
 bindsym $mod+u focus parent
 bindsym $mod+d focus child
-
 bindsym $mod+Tab workspace back_and_forth
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
+# workspaces names
 set $ws1 "i"
 set $ws2 "o"
 set $ws5 "f"
 set $ws6 "w"
 set $ws7 "e"
 
-# switch to workspace
+# switch workspace
 bindsym $mod+i workspace $ws1
 bindsym $mod+o workspace $ws2
 bindsym $mod+f workspace $ws5
 bindsym $mod+w workspace $ws6
 bindsym $mod+e workspace $ws7
 
-# move focused container to workspace
+# move window
 bindsym $mod+Shift+i move container to workspace $ws1
 bindsym $mod+Shift+o move container to workspace $ws2
 bindsym $mod+Shift+f move container to workspace $ws5
 bindsym $mod+Shift+w move container to workspace $ws6
 bindsym $mod+Shift+e move container to workspace $ws7
 
-# reload the configuration file
+# reload/restart
 bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# resize window (you can also use the mouse for that)
+# resize
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
         bindsym h resize shrink width 5 px or 5 ppt
         bindsym j resize grow height 5 px or 5 ppt
         bindsym k resize shrink height 5 px or 5 ppt
         bindsym l resize grow width 5 px or 5 ppt
-
-        # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# bar
+bindsym $mod+b bar mode toggle
 bar {
-        status_command wm_bar
+        status_command wm-bar
         hidden_state hide
         mode hide
 }
-
-# Make the currently focused window a scratchpad
 bindsym $mod+Shift+minus move scratchpad
-
-# Show the first scratchpad window
 bindsym $mod+minus scratchpad show
