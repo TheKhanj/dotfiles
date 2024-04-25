@@ -4,23 +4,62 @@
 # brightnessControl [ up | down ]
 
 exp_time=2000
+notification_id=99998
+step=32
+
+get_device() {
+	local dir='/sys/class/backlight'
+	local subdir="$(ls "$dir")"
+	echo -n "$dir/$subdir/brightness"
+}
 
 get_brightness() {
-	xbacklight -get | cut -d '.' -f 1
+	cat "$(get_device)"
+}
+
+set_brightness() {
+	local level="$1"
+
+	echo "$level" | sudo tee "$(get_device)" >/dev/null
 }
 
 send_notification() {
-	brightness=$(get_brightness)
-	notify-send "$brightness" -t "$exp_time"
+	local percentage=$(($(get_brightness) * 100 / 1023))
+
+	notify-send -r $notification_id "Brightness: ${percentage}%" -t $exp_time
+}
+
+min() {
+	local a=$1
+	local b=$2
+
+	[ $1 -lt $2 ] && echo -n $1 || echo -n $2
+}
+
+max() {
+	local a=$1
+	local b=$2
+
+	[ $1 -gt $2 ] && echo -n $1 || echo -n $2
+}
+
+increase() {
+	local dev='/sys/class/backlight/gmux_backlight/brightness'
+	set_brightness $(min $(($(get_brightness) + $step)) 1023)
+	send_notification
+}
+
+decrease() {
+	local dev='/sys/class/backlight/gmux_backlight/brightness'
+	set_brightness $(max $(($(get_brightness) - $step)) 0)
+	send_notification
 }
 
 case $1 in
 up)
-	xbacklight -inc "${2:-5}"
-	send_notification
+	increase
 	;;
 down)
-	xbacklight -dec "${2:-5}"
-	send_notification
+	decrease
 	;;
 esac
