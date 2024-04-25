@@ -1,6 +1,0 @@
-[Unit]
-Description=Xray Service
-BindsTo=desktop.target
-
-[Service]
-ExecStart=/usr/bin/xray -c %h/vpn/ir4.json

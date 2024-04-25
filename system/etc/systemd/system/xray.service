@@ -1,0 +1,5 @@
+[Unit]
+Description=Xray Service
+
+[Service]
+ExecStart=/usr/bin/xray -c /etc/vpn/ir4.json
