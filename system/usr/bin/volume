@@ -6,37 +6,37 @@
 exp_time=2000
 device=pulse
 pactl_device="$(pactl get-default-sink)"
+notification_id=99999
 
 get_volume() {
-	amixer -D "$device" get Master | grep '%' | head -n 1 | cut -d '[' -f 2 | cut -d '%' -f 1
+	pactl list sinks | awk -v RS= '/State: RUNNING/' | grep Volume: | head -n 1 | grep -o '[0-9]\+%' | head -n 1
 }
 
 is_mute() {
-	amixer -D "$device" get Master | grep '%' | grep -oE '[^ ]+$' | grep off >/dev/null
+	pactl get-sink-mute "$pactl_device" >/dev/null | grep 'yes'
 }
 
 send_notification() {
-	volume="$(get_volume)"
+	local volume="$(get_volume)"
 
-	notify-send "$volume" -t "$exp_time"
+	notify-send -r $notification_id "Volume: $volume" -t "$exp_time"
 }
 
 command="$1"
 case "$command" in
 up)
-	amixer -D "$device" set Master on >/dev/null
 	pactl set-sink-volume "$pactl_device" "+${2:-5}%" >/dev/null
 	send_notification
 	;;
 down)
-	amixer -D "$device" set Master on >/dev/null
 	pactl set-sink-volume "$pactl_device" "-${2:-5}%" >/dev/null
 	send_notification
 	;;
 mute)
-	amixer -D "$device" set Master 1+ toggle >/dev/null
+	pactl set-sink-mute "$pactl_device" toggle >/dev/null
+
 	if is_mute; then
-		notify-send "Mute" -t $exp_time
+		notify-send -r $notification_id "Muted" -t $exp_time
 	else
 		send_notification
 	fi
