@@ -9,7 +9,7 @@ pactl_device="$(pactl get-default-sink)"
 notification_id=99999
 
 get_volume() {
-	pactl list sinks | awk -v RS= '/State: RUNNING/' | grep Volume: | head -n 1 | grep -o '[0-9]\+%' | head -n 1
+	pactl list sinks | awk -v RS= "/Name: $pactl_device/" | grep Volume: | head -n 1 | grep -o '[0-9]\+%' | head -n 1
 }
 
 is_mute() {
