@@ -13,7 +13,7 @@ get_volume() {
 }
 
 is_mute() {
-	pactl get-sink-mute "$pactl_device" >/dev/null | grep 'yes'
+	pactl get-sink-mute "$pactl_device" | grep 'yes' >/dev/null
 }
 
 send_notification() {
