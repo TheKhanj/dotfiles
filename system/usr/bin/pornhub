@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+export https{s,}_proxy=socks5://127.0.0.1:10808
+base_link="$1"
+
+i=${2:-1}
+
+while true; do
+	link="$(echo "$base_link" | sed "s/seg-[0-9]\+/seg-$i/")"
+	echo "downloading segment $i" >&2
+
+	curl --retry 10 -Ss "$link" || {
+		echo "failed downloading segment $i" >&2
+		break
+	}
+
+	i=$((i + 1))
+done
