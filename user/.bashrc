@@ -1,6 +1,10 @@
 __setup_fzf() {
-	source /usr/share/fzf/key-bindings.bash
-	source /usr/share/fzf/completion.bash
+	local key_bindings='/usr/share/fzf/key-bindings.bash'
+	local completion='/usr/share/fzf/completion.bash'
+
+	[ -f $completion ] && source "$completion"
+	[ -f $key_bindings ] && source "$key_bindings"
+
 	bind -m vi-command '"\C-f": "\C-z\ec\C-z"'
 	bind -m vi-insert '"\C-f": "\C-z\ec\C-z"'
 	bind -r "\ec"
