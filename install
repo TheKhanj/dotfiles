@@ -72,9 +72,7 @@ setup_symlinks() {
 
 main() {
 	get_config
-	{
-		[ "$HEADLESS" -eq 0 ] && setup_symlinks user
-	} || exit 1
+	setup_symlinks user || exit 1
 	setup_symlinks system || exit 1
 
 	./setup/setup-nnn || exit 1
