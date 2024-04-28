@@ -89,7 +89,7 @@ unroute() {
 	local direct_dev="$(get_direct_device)"
 
 	ip route del default
-	ip route add default dev "$direct_dev"
+	ip route add default via "$(get_direct_router_ip)" dev "$direct_dev"
 
 	read -ra direct_ips <<<"$(get_direct_ips)"
 
