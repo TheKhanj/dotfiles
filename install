@@ -1,5 +1,39 @@
 #!/usr/bin/env bash
 
+declare HEADLESS
+
+prompt_boolean() {
+	local var_name="$1"
+	local message="$2"
+	local default=${3:-1}
+
+	yn="$([ "$default" -eq 0 ] && echo -n "[y/N]" || echo -n '[Y/n]')"
+
+	echo -n "$message $yn " && read -r input
+
+	[ "$input" = "y" ] || [ "$input" = "Y" ] && {
+		eval "$var_name=1"
+		return
+	}
+
+	[ "$input" = "n" ] || [ "$input" = "N" ] && {
+		eval "$var_name=0"
+		return
+	}
+
+	[ "$input" = "" ] && {
+		eval "$var_name=$default"
+		return
+	}
+
+	prompt_boolean "$1" "$2" "$3"
+}
+
+get_config() {
+	prompt_boolean 'HEADLESS' 'Do you want to install on a headless machine?'
+	export HEADLESS
+}
+
 execute_with_privilege() {
 	local base_dir="$1"
 	[ "$base_dir" = 'system' ] && {
@@ -37,16 +71,25 @@ setup_symlinks() {
 }
 
 main() {
-	setup_symlinks user || exit 1
+	get_config
+	{
+		[ "$HEADLESS" -eq 0 ] && setup_symlinks user
+	} || exit 1
 	setup_symlinks system || exit 1
 
-	./setup/setup-nnn
-	./setup/setup-keyboard
-	./setup/setup-fonts
-	./setup/setup-system
+	./setup/setup-nnn || exit 1
+	{
+		[ "$HEADLESS" -eq 0 ] && ./setup/setup-keyboard
+	} || exit 1
+	{
+		[ "$HEADLESS" -eq 0 ] && ./setup/setup-fonts
+	} || exit 1
+	{
+		[ "$HEADLESS" -eq 0 ] && ./setup/setup-system
+	} || exit 1
 
-	sudo locale-gen
-	ln -sf $PWD/nvim/ $HOME/.config/nvim
+	sudo locale-gen || exit 1
+	ln -sf $PWD/nvim/ $HOME/.config/nvim || exit 1
 }
 
 main
