@@ -77,7 +77,9 @@ create_systemd_files() {
 }
 
 copy_layout() {
-	sudo cp "./setup/keyboard-layout.xkb" '/usr/share/X11/xkb/symbols/custom'
+	local file='/usr/share/X11/xkb/symbols/custom'
+	sudo mkdir -p "$(dirname "$file")"
+	sudo cp "./setup/keyboard-layout.xkb" "$file"
 }
 
 create_touchcursor_config
