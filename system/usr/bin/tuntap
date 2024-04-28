@@ -26,23 +26,11 @@ stop() {
 }
 
 get_direct_device() {
-	local host="$(cat /etc/hostname | tr -d '\n')"
-
-	case "$host" in
-	'slut')
-		echo -n 'wlp4s0'
-		;;
-	'peach')
-		# TODO: fix this
-		echo -n 'wlps0'
-		;;
-	'black')
-		echo -n 'enp10s0'
-		;;
-	*)
-		fail "unknown host ${host}"
-		;;
-	esac
+	ip route |
+		grep '^[0-9]' |
+		grep -v '169.254.10.1' |
+		head -n 1 |
+		grep -oP '(?<=dev )[^ ]*'
 }
 
 get_direct_ips() {
