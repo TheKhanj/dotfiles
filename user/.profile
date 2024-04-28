@@ -29,6 +29,8 @@ __setup_aliases() {
 
 __setup_grc() {
 	export GRC_ALIASES=true
+	! [ -f "/etc/grc.sh" ] &&
+		sudo curl 'https://raw.githubusercontent.com/garabik/grc/master/grc.sh' -Lo '/etc/grc.sh'
 	. /etc/grc.sh
 }
 
