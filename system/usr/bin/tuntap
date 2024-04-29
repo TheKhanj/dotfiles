@@ -29,6 +29,8 @@ get_direct_device() {
 	ip route |
 		grep '^[0-9]' |
 		grep -v '169.254.10.1' |
+		grep -v 'docker' |
+		grep -v 'br-' |
 		head -n 1 |
 		grep -oP '(?<=dev )[^ ]*'
 }
