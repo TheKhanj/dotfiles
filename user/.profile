@@ -34,15 +34,8 @@ __setup_grc() {
 	. /etc/grc.sh
 }
 
-__setup_bashrc() {
-	[ -n "$BASH_VERSION" ] &&
-		[ -f "$HOME/.bashrc" ] &&
-		. "$HOME/.bashrc"
-}
-
 . /etc/profile
 __setup_path
 __setup_apps
 __setup_aliases
 __setup_grc
-__setup_bashrc

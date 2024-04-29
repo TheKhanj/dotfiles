@@ -40,6 +40,7 @@ __setup_bash_clipboard() {
 }
 
 __setup_shell() {
+	. "$HOME/.profile"
 	[ -n "$TMUX" ] && export TERM='tmux-256color'
 	local hostname="$(cat /etc/hostname | tr -d '\n')"
 	export PS1="$(printf "%s@%s:\w\$ " "$USER" "$hostname")"
