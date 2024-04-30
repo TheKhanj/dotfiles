@@ -1,9 +1,9 @@
 __setup_path() {
-	export PATH="$PATH:$HOME/.local/bin"
-	export PATH="$PATH:$HOME/.cargo/bin"
-	export PATH="$PATH:$HOME/.volta/bin"
-	export PATH="$PATH:$HOME/go/bin"
-	export PATH="$PATH:$HOME/.pyenv/shims"
+	export PATH="$HOME/go/bin:$PATH"
+	export PATH="$HOME/.local/bin:$PATH"
+	export PATH="$HOME/.cargo/bin:$PATH"
+	export PATH="$HOME/.volta/bin:$PATH"
+	export PATH="$HOME/.pyenv/shims:$PATH"
 }
 
 __setup_apps() {
