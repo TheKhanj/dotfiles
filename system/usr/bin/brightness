@@ -13,6 +13,11 @@ get_device() {
 	echo -n "$dir/$subdir/brightness"
 }
 
+get_max_brightness() {
+	local dev=$(get_device)
+	cat "$(dirname $dev)/max_brightness"
+}
+
 get_brightness() {
 	cat "$(get_device)"
 }
@@ -24,7 +29,7 @@ set_brightness() {
 }
 
 send_notification() {
-	local percentage=$(($(get_brightness) * 100 / 1023))
+	local percentage=$(($(get_brightness) * 100 / $(get_max_brightness)))
 
 	notify-send -r $notification_id "Brightness: ${percentage}%" -t $exp_time
 }
@@ -45,7 +50,7 @@ max() {
 
 increase() {
 	local dev='/sys/class/backlight/gmux_backlight/brightness'
-	set_brightness $(min $(($(get_brightness) + $step)) 1023)
+	set_brightness $(min $(($(get_brightness) + $step)) $(get_max_brightness))
 	send_notification
 }
 
