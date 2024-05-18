@@ -8,4 +8,6 @@ map [fullscreen] ; feedkeys :
 map i set recolor
 map [fullscreen] i set recolor
 
+set selection-clipboard clipboard
+
 # vi: ft=sh
