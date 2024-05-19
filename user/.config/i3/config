@@ -25,7 +25,7 @@ bindsym $mod+m fullscreen toggle
 
 # container layout
 bindsym $mod+t layout tabbed
-bindsym $mod+a layout toggle
+bindsym $mod+a layout toggle split
 
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
