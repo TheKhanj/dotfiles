@@ -70,7 +70,8 @@ install_common() {
 		yt-dlp transmission-cli \
 		rsync || return 1
 
-	assert_yay && yay -S --needed xray-bin || return 1
+	assert_yay && yay -S --needed \
+		xray-bin tun2socks-bin || return 1
 }
 
 install_dev() {
