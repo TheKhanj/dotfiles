@@ -85,6 +85,9 @@ install_dev() {
 		bear || return 1
 
 	assert_node_env || return 1
+	[ -f $HOME/.volta/bin/tsc ] || {
+		volta install typescript || return 1
+	}
 
 	assert_yay && yay -S --needed \
 		watchman-bin \
