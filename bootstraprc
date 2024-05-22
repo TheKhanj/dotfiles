@@ -60,6 +60,7 @@ install_drivers() {
 install_common() {
 	sudo pacman -S --needed \
 		openssh \
+		nfs-utils \
 		p7zip \
 		proxychains \
 		socat gnu-netcat nmap \
