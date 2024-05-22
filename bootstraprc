@@ -3,11 +3,13 @@
 assert_node_env() {
 	[ -f $HOME/.volta/bin/node ] &&
 		[ -f $HOME/.volta/bin/npm ] &&
+		[ -f $HOME/.volta/bin/tsc ] &&
+		[ -f $HOME/.volta/bin/prettierd ] &&
 		return 0
 
 	assert_yay && yay -S --needed volta-bin || return 1
 
-	volta install node npm || return 1
+	volta install node npm typescript @fsouza/prettierd || return 1
 }
 
 assert_yay() {
@@ -86,9 +88,6 @@ install_dev() {
 		bear || return 1
 
 	assert_node_env || return 1
-	[ -f $HOME/.volta/bin/tsc ] || {
-		volta install typescript || return 1
-	}
 
 	assert_yay && yay -S --needed \
 		watchman-bin \
