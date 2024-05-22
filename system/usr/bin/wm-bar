@@ -21,7 +21,9 @@ w_battery() {
 handsfree_bluetooth_cache="/tmp/handsfree_bluetooth_cache"
 
 w_bluetooth_battery() {
-	local last_modified_time=$(stat -c '%Y' "$handsfree_bluetooth_cache" || printf '0')
+	local last_modified_time=$(
+		stat -c '%Y' "$handsfree_bluetooth_cache" 2>/dev/null || printf '0'
+	)
 	local now=$(date '+%s')
 	local _5_minutes=$(expr 5 '*' 60)
 	local ttl_threshold=$(expr $now - $_5_minutes)
