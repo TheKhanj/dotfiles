@@ -87,7 +87,6 @@ main() {
 	} || exit 1
 
 	sudo locale-gen || exit 1
-	ln -sf $PWD/nvim/ $HOME/.config/nvim || exit 1
 }
 
 main
