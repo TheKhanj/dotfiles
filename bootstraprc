@@ -87,6 +87,7 @@ install_dev() {
 		shfmt \
 		base-devel \
 		cloc \
+		ctags \
 		bear || return 1
 
 	assert_node_env || return 1
