@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+pacman -Qe |
+	awk '{ print $1 }' |
+	while read -r name; do
+		cat $HOME/dotfiles/bootstraprc |
+			grep -F "$name" >/dev/null || echo "$name"
+	done

@@ -62,7 +62,7 @@ install_common() {
 		openssh \
 		nfs-utils \
 		p7zip \
-		proxychains \
+		proxychains-ng \
 		socat gnu-netcat nmap \
 		lshw ncdu \
 		which \
