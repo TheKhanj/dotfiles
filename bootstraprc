@@ -84,7 +84,7 @@ install_dev() {
 		gcc gdb make man-pages pkgconf \
 		python-pip pyenv \
 		rust-analyzer rustup \
-		shfmt \
+		shfmt stylua \
 		base-devel \
 		cloc \
 		ctags \
