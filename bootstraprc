@@ -86,6 +86,7 @@ install_dev() {
 		rust-analyzer rustup \
 		shfmt \
 		base-devel \
+		cloc \
 		bear || return 1
 
 	assert_node_env || return 1
