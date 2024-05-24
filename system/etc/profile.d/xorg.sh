@@ -1,1 +1,1 @@
-export DISPLAY=':0'
+export DISPLAY="${DISPLAY:-0}"
