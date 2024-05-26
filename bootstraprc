@@ -63,6 +63,7 @@ install_common() {
 		nfs-utils \
 		p7zip \
 		proxychains-ng \
+		usbutils \
 		socat gnu-netcat nmap \
 		lshw ncdu \
 		which \
@@ -81,7 +82,7 @@ install_dev() {
 	sudo pacman -S --needed \
 		go gofumpt \
 		entr \
-		gcc gdb make man-pages pkgconf \
+		clang gcc gdb make man-pages pkgconf \
 		python-pip pyenv \
 		rust-analyzer rustup \
 		shfmt stylua \
@@ -101,7 +102,8 @@ install_extra() {
 	sudo pacman -S --needed \
 		xournalpp \
 		remmina freerdp libvncserver libvncserver \
-		wireshark-cli || return 1
+		wireshark-cli \
+		imagemagick || return 1
 
 	assert_yay && yay -S \
 		v4l2loopback-dkms v4l2loopback-utils || return 1

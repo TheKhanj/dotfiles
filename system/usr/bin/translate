@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-dmenu -p 'Translate:' </usr/share/dictionary/english-words.db |
-	xargs -r /usr/bin/fastdic

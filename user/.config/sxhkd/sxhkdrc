@@ -19,7 +19,7 @@ shift + Print
 super + slash
 	switch-display
 super + shift + t
-	/usr/bin/translate
+	/usr/bin/dict
 super + z
 	slock
 super + semicolon
