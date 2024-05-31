@@ -4,6 +4,8 @@ After=network.target
 
 [Service]
 ExecStart=/usr/bin/xray -c /etc/vpn/config.json
+Restart=always
+RestartSec=10s
 
 [Install]
 WantedBy=vpn.target
