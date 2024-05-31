@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+help() {
+	cat <<-EOF
+		man-to-pdf bash
+	EOF
+}
+
+[ -z "$1" ] && {
+	help
+	exit 1
+}
+
+rm -r "$1" 2>/dev/null
+mkdir -p "$1"
+cd "$1"
+
+pacman -Ql "$1" |
+	grep /man/man |
+	awk '{ print $2 }' |
+	parallel 'test -f {} && man -Tpdf -l {} > $(basename {}).pdf'
