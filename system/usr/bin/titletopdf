@@ -60,5 +60,5 @@ text="$(cowthink -f "$theme" "$title")"
 font_size=$(get_font_size "$text")
 
 echo "$text" |
-	enscript -B -f Courier@$font_size -o - |
+	enscript -B -f SourceCodePro-Bold@$font_size -o - |
 	ps2pdf - "$output"
