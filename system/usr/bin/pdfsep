@@ -1,0 +1,94 @@
+#!/usr/bin/env sh
+
+help() {
+	cat <<-EOF
+		Usage:
+		  pdfsep {odd|even} {input-PDF}
+	EOF
+}
+
+type="$1"
+input="$2"
+output="$(echo "$input" | rev | cut -d. -f2- | rev)-$type.pdf"
+
+[ -n "$type" ] &&
+	[ -n "$input" ] && [ -f "$input" ] &&
+	[ -n "$output" ] &&
+	([ "$type" = 'even' ] || [ "$type" = 'odd' ]) ||
+	{
+		help
+		exit 1
+	}
+
+input="$(realpath "$input")"
+break_dir="$(mktemp -u)"
+page_count="$(pdfinfo "$input" | grep 'Pages' | awk '{ print $2 }')"
+[ -z "$page_count" ] && exit 1
+echo "page count: $page_count" >&2
+echo "break directory: $break_dir" >&2
+
+is_odd() {
+	local n=$1
+
+	local half="$(expr $n / 2)"
+
+	[ $(expr $half \* 2) -ne $n ]
+}
+
+is_even() {
+	! is_odd $1
+}
+
+join_pages() {
+	local pages="$(
+		for page in $(seq $page_count); do
+			! is_$type "$page" && continue
+
+			echo "$break_dir/$page.pdf"
+		done | tr '\n' ' '
+	)"
+
+	pdfunite $pages "$output"
+}
+
+add_blank_page() {
+	page_count=$(expr $page_count + 1)
+
+	pushd "$break_dir"
+
+	echo '' |
+		enscript -B -p - |
+		ps2pdf - "$page_count.pdf"
+
+	popd
+}
+
+break_pages() {
+	mkdir -p "$break_dir"
+	pushd "$break_dir"
+
+	pdfseparate "$input" "%d.pdf" || return 1
+
+	if is_odd $page_count && [ "$type" = "even" ]; then
+		add_blank_page ||
+			return 1
+	fi
+
+	popd
+}
+
+cleanup() {
+	rm -r "$break_dir"
+}
+
+main() {
+	break_pages || return 1
+	join_pages || return 1
+	cleanup
+}
+
+main || {
+	echo "failed separating file" >&2
+	cleanup
+	exit 1
+}
