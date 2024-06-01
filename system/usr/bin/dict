@@ -33,14 +33,18 @@ prompt_word() {
 }
 
 pager() {
+	local stdin="$(cat)"
+	[ -z "$stdin" ] && return 1
+
 	local p="${PAGER:-less}"
+
 	[ "$IS_TTY" -eq 0 ] && {
-		$p <&0
+		echo "$stdin" | $p
 		return 0
 	}
 
 	local tmp="$(mktemp -u)"
-	cat >"$tmp"
+	echo "$stdin" >"$tmp"
 
 	xfce4-terminal -e "bash -c '. \"$HOME/.profile\"; $p \"$tmp\"; rm \"$tmp\"'"
 }
@@ -133,10 +137,10 @@ get_pronounciation() {
 
 main() {
 	local word="${1:-$(prompt_word)}"
-	[ "$?" -ne 0 ] && exit 1
+	[ -z "$word" ] && exit 1
 
 	local meaning="$(jq ".$word" -r <"$DICTIONARY")"
-	[ "$?" -ne 0 ] && exit 1
+	[ -z "$meaning" ] && exit 1
 
 	assert_not_null "$meaning" || exit 1
 
