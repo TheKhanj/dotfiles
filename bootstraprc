@@ -82,6 +82,7 @@ install_dev() {
 	sudo pacman -S --needed \
 		go gofumpt \
 		entr \
+		cmake \
 		clang gcc gdb make man-pages pkgconf \
 		python-pip pyenv \
 		rust-analyzer rustup \
@@ -101,6 +102,7 @@ install_dev() {
 install_extra() {
 	sudo pacman -S --needed \
 		xournalpp \
+		android-tools scrcpy \
 		remmina freerdp libvncserver libvncserver \
 		wireshark-cli \
 		imagemagick || return 1
