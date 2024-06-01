@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+help() {
+	cat <<-EOF
+		Usage:
+		  infotopdf [INFO-MENU-ITEM]
+	EOF
+}
+
+item="$1"
+
+[ -z "$item" ] && help && exit 1
+
+coverout="$(mktemp -u).pdf"
+infoout="$(mktemp -u).pdf"
+
+titletopdf "Info of $item" "$coverout"
+
+info --subnodes "$item" |
+	sed '/^File: .*/d' |
+	texttopdf "$infoout"
+
+pdfunite "$coverout" "$infoout" "info-$item.pdf"
+
+rm "$coverout" "$infoout"
