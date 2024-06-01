@@ -1,0 +1,64 @@
+#!/usr/bin/env sh
+
+themes="$(
+	cat <<-EOF | tr ' ' '\n'
+		beavis.zen blowfish bong cheese cower daemon default dragon dragon-and-cow
+		elephant eyes flaming-sheep ghostbusters head-in hellokitty kiss milk
+		moofasa moose mutilated ren sheep skeleton small sodomized stegosaurus
+		stimpy telebears three-eyes turkey turtle tux udder www
+	EOF
+)"
+
+[ "$1" = '-l' ] && echo "$themes" | tr ' ' '\n' && exit
+
+help() {
+	cat <<-EOF
+		Usage:
+		  titletopdf {TITLE} {OUT-FILE} [THEME]
+		  titletopdf -l
+	EOF
+}
+
+random_theme() {
+	echo "$themes" | shuf | head -n 1
+}
+
+get_font_size() {
+	local text="$1"
+
+	local max_w="$(echo "$text" | wc -L)"
+	local max_h="$(echo "$text" | wc -l)"
+
+	local normal_h="$max_h"
+	local normal_w="$(expr $max_w '*' 3 / 2)"
+
+	local maxmax="$(
+		[ "$normal_w" -gt "$normal_h" ] &&
+			echo $normal_w ||
+			echo $normal_h
+	)"
+
+	[ $maxmax -lt 8 ] && echo 48 && return
+	[ $maxmax -lt 16 ] && echo 40 && return
+	[ $maxmax -lt 24 ] && echo 32 && return
+	[ $maxmax -lt 32 ] && echo 28 && return
+	[ $maxmax -lt 60 ] && echo 24 && return
+	[ $maxmax -lt 80 ] && echo 16 && return
+	[ $maxmax -lt 115 ] && echo 12 && return
+	[ $maxmax -lt 150 ] && echo 10 && return
+	echo 8
+}
+
+title="$1"
+output="$2"
+theme="${3:-$(random_theme)}"
+
+[ -z "$title" ] && help && exit 1
+[ -z "$output" ] && help && exit 1
+
+text="$(cowthink -f "$theme" "$title")"
+font_size=$(get_font_size "$text")
+
+echo "$text" |
+	enscript -B -f Courier@$font_size -o - |
+	ps2pdf - "$output"
