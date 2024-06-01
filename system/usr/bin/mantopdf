@@ -2,20 +2,104 @@
 
 help() {
 	cat <<-EOF
-		man-to-pdf bash
+		mantopdf [PACKAGE-NAME]
 	EOF
 }
 
-[ -z "$1" ] && {
-	help
-	exit 1
+package="$1"
+
+parts="$(mktemp -u)"
+sections="$(mktemp -u)"
+all="$(mktemp -u).pdf"
+cover="$(mktemp -u).pdf"
+
+[ -z "$package" ] && help && exit 1
+
+get_section_cover() {
+	local section="$1"
+	local file="$(mktemp -u).pdf"
+
+	titletopdf "Section $section" "$file" 2>/dev/null >/dev/null ||
+		return 1
+
+	echo "$file"
 }
 
-rm -r "$1" 2>/dev/null
-mkdir -p "$1"
-cd "$1"
+join_singles_to_sections() {
+	pushd "$parts"
 
-pacman -Ql "$1" |
-	grep /man/man |
-	awk '{ print $2 }' |
-	parallel 'test -f {} && man -Tpdf -l {} > $(basename {}).pdf'
+	for section in $(seq 1 9); do
+		files="$(
+			ls |
+				grep "$section" |
+				sort |
+				tr '\n' ' '
+		)"
+
+		[ -z "$files" ] && continue
+
+		section_cover="$(get_section_cover "$section")"
+		[ $? -ne 0 ] && {
+			echo "getting section cover failed"
+			return 1
+		}
+
+		pdfunite "$section_cover" $files "$sections/section-$section.pdf"
+
+		rm "$section_cover"
+	done
+
+	popd
+}
+
+gen_parts() {
+	pacman -Ql "$package" |
+		grep /man/man |
+		awk '{ print $2 }' |
+		parallel "test -f {} && man -Tpdf -l {} > $parts/\$(basename {}).pdf"
+
+	return 0
+}
+
+join_sections_to_all() {
+	pushd "$sections"
+	local files="$(ls | sort -h)"
+
+	pdfunite $files "$all"
+	popd
+}
+
+create_cover() {
+	titletopdf "Man of $package" "$cover"
+}
+
+join_cover_and_all() {
+	pdfunite "$cover" "$all" "man-$package.pdf"
+}
+
+cleanup() {
+	rm -r "$parts" "$sections" "$all" "$cover"
+}
+
+main() {
+	mkdir -p "$parts"
+	mkdir -p "$sections"
+
+	echo "single directory: $parts"
+	echo "sections directory: $sections"
+	echo "cover: $cover"
+	echo "all: $all"
+
+	gen_parts || return 1
+	join_singles_to_sections || return 1
+	join_sections_to_all || return 1
+	create_cover || return 1
+	join_cover_and_all || return 1
+}
+
+main
+exit_code=$?
+
+cleanup
+
+exit $exit_code
