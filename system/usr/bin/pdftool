@@ -1,0 +1,167 @@
+#!/usr/bin/env sh
+
+help() {
+	cat <<-EOF
+		Usage:
+		  pdftool separate {odd|even} {input-PDF}
+		  pdftool reverse {input-PDF}
+	EOF
+}
+
+is_odd() {
+	local n=$1
+
+	local half="$(expr $n / 2)"
+
+	[ $(expr $half \* 2) -ne $n ]
+}
+
+is_even() {
+	! is_odd $1
+}
+
+join_pages() {
+	log 'joining pages'
+	local type="$1"
+	local page_count="$2"
+	local break_dir="$3"
+	local output="$4"
+
+	local pages="$(
+		for page in $(seq $page_count); do
+			! is_$type "$page" && continue
+
+			echo "$break_dir/$page.pdf"
+		done | tr '\n' ' '
+	)"
+
+	pdfunite $pages "$output"
+	log 'joining pages (DONE)'
+}
+
+add_blank_page() {
+	log 'adding blank page'
+	local page_count="$1"
+	local break_dir="$2"
+
+	pushd "$break_dir" >/dev/null
+
+	echo '' |
+		enscript -B -p - |
+		ps2pdf - "$page_count.pdf"
+
+	popd /dev/null
+	log 'adding blank page (DONE)'
+}
+
+log() {
+	echo "$1" >&2
+}
+
+break_pages() {
+	log 'breaking pages'
+	local input="$1"
+	local break_dir="$2"
+
+	mkdir -p "$break_dir"
+	pushd "$break_dir" >/dev/null
+
+	pdfseparate "$input" "%d.pdf" || return 1
+
+	popd >/dev/null
+	log 'breaking pages (DONE)'
+}
+
+cleanup() {
+	local break_dir="$1"
+	rm -r "$break_dir"
+}
+
+get_page_count() {
+	pdfinfo "$1" | grep 'Pages' | awk '{ print $2 }'
+}
+
+separate() {
+	local type="$1"
+	local input="$2"
+	local output="$(echo "$input" | rev | cut -d. -f2- | rev)-$type.pdf"
+
+	[ -n "$type" ] &&
+		[ -n "$input" ] && [ -f "$input" ] &&
+		[ -n "$output" ] &&
+		([ "$type" = 'even' ] || [ "$type" = 'odd' ]) ||
+		{
+			help
+			exit 1
+		}
+
+	input="$(realpath "$input")"
+	local break_dir="$(mktemp -u)"
+	local page_count="$(get_page_count "$input")"
+	[ -z "$page_count" ] && exit 1
+	echo "page count: $page_count" >&2
+	echo "break directory: $break_dir" >&2
+
+	break_pages "$input" "$break_dir" || {
+		cleanup
+		return 1
+	}
+
+	if is_odd $page_count && [ "$type" = "even" ]; then
+		page_count=$(expr $page_count + 1)
+
+		add_blank_page "$page_count" "$break_dir" || {
+			cleanup
+			return 1
+		}
+	fi
+
+	join_pages "$type" "$page_count" "$break_dir" "$output" || {
+		cleanup
+		return 1
+	}
+
+	cleanup "$break_dir"
+}
+
+reverse() {
+	local input="$1"
+
+	input="$(realpath "$input")"
+	local output="$(echo "$input" | rev | cut -d. -f2- | rev)-rev.pdf"
+	local page_count="$(get_page_count "$input")"
+	local break_dir="$(mktemp -u)"
+	mkdir -p "$break_dir"
+
+	break_pages "$input" "$break_dir" || return 1
+	local single_files="$(
+		seq "$page_count" |
+			sort -r -h |
+			sed -E "s|(.*)|$break_dir/\1.pdf|" |
+			tr '\n' ' '
+	)"
+
+	pdfunite $single_files "$output"
+}
+
+action="$1"
+([ "$action" = "separate" ] || [ "$action" = "reverse" ]) ||
+	{
+		help
+		exit 1
+	}
+
+[ "$action" = "separate" ] &&
+	{
+		separate "$2" "$3" || {
+			echo "failed separating file" >&2
+			exit 1
+		}
+
+		exit 0
+	}
+
+reverse "$2" || {
+	echo "failed reversing file" >&2
+	exit 1
+}
