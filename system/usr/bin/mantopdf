@@ -10,6 +10,7 @@ package="$1"
 
 parts="$(mktemp -u)"
 sections="$(mktemp -u)"
+tmp_output="$(mktemp -u).pdf"
 all="$(mktemp -u).pdf"
 cover="$(mktemp -u).pdf"
 
@@ -73,12 +74,27 @@ create_cover() {
 	titletopdf "Man of $package" "$cover"
 }
 
+optimize_pdf_size() {
+	local input="$1"
+	local output="$2"
+
+	echo 'optimizing pdf output...' >&2
+
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 \
+		-dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH \
+		-sOutputFile="$output" "$input"
+
+	echo 'optimizing pdf output (DONE)' >&2
+}
+
 join_cover_and_all() {
-	pdfunite "$cover" "$all" "man-$package.pdf"
+	pdfunite "$cover" "$all" "$tmp_output"
+
+	optimize_pdf_size "$tmp_output" "man-$package.pdf"
 }
 
 cleanup() {
-	rm -r "$parts" "$sections" "$all" "$cover"
+	rm -r "$parts" "$sections" "$all" "$cover" "$tmp_output"
 }
 
 main() {

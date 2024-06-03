@@ -20,8 +20,21 @@ is_even() {
 	! is_odd $1
 }
 
+optimize_pdf_size() {
+	local input="$1"
+	local output="$2"
+
+	log 'optimizing pdf output...'
+
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 \
+		-dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH \
+		-sOutputFile="$output" "$input"
+
+	log 'optimizing pdf output (DONE)'
+}
+
 join_pages() {
-	log 'joining pages'
+	log "joining pages from $break_dir..."
 	local type="$1"
 	local page_count="$2"
 	local break_dir="$3"
@@ -50,7 +63,7 @@ add_blank_page() {
 		enscript -B -p - |
 		ps2pdf - "$page_count.pdf"
 
-	popd /dev/null
+	popd >/dev/null
 	log 'adding blank page (DONE)'
 }
 
@@ -59,7 +72,7 @@ log() {
 }
 
 break_pages() {
-	log 'breaking pages'
+	log "breaking pages into $break_dir"
 	local input="$1"
 	local break_dir="$2"
 
@@ -75,6 +88,9 @@ break_pages() {
 cleanup() {
 	local break_dir="$1"
 	rm -r "$break_dir"
+
+	local tmp_output="$2"
+	[ -z "$tmp_output" ] && rm "$tmp_output"
 }
 
 get_page_count() {
@@ -99,11 +115,9 @@ separate() {
 	local break_dir="$(mktemp -u)"
 	local page_count="$(get_page_count "$input")"
 	[ -z "$page_count" ] && exit 1
-	echo "page count: $page_count" >&2
-	echo "break directory: $break_dir" >&2
 
 	break_pages "$input" "$break_dir" || {
-		cleanup
+		cleanup "$break_dir"
 		return 1
 	}
 
@@ -111,17 +125,20 @@ separate() {
 		page_count=$(expr $page_count + 1)
 
 		add_blank_page "$page_count" "$break_dir" || {
-			cleanup
+			cleanup "$break_dir"
 			return 1
 		}
 	fi
 
-	join_pages "$type" "$page_count" "$break_dir" "$output" || {
-		cleanup
+	local tmp_output="$(mktemp -u).pdf"
+	join_pages "$type" "$page_count" "$break_dir" "$tmp_output" || {
+		cleanup "$break_dir" "$tmp_output"
 		return 1
 	}
+	optimize_pdf_size "$tmp_output" "$output"
 
-	cleanup "$break_dir"
+	cleanup "$break_dir" "$tmp_output"
+	return 0
 }
 
 reverse() {
@@ -133,7 +150,12 @@ reverse() {
 	local break_dir="$(mktemp -u)"
 	mkdir -p "$break_dir"
 
-	break_pages "$input" "$break_dir" || return 1
+	break_pages "$input" "$break_dir" || {
+		cleanup "$break_dir"
+		return 1
+	}
+
+	log "joining pages from $break_dir..."
 	local single_files="$(
 		seq "$page_count" |
 			sort -r -h |
@@ -141,7 +163,13 @@ reverse() {
 			tr '\n' ' '
 	)"
 
-	pdfunite $single_files "$output"
+	local tmp_output="$(mktemp -u).pdf"
+	pdfunite $single_files "$tmp_output"
+	optimize_pdf_size "$tmp_output" "$output"
+
+	cleanup "$break_dir" "$tmp_output"
+
+	log "joining pages (DONE)"
 }
 
 action="$1"
