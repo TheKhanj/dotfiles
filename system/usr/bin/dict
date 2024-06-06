@@ -6,7 +6,7 @@ DICTIONARY="$HOME/.cache/dictionary/dictionary.json"
 CACHED_WORDS="$HOME/.cache/dictionary/cached_words"
 PRONOUNCIATIONS="$HOME/.cache/dictionary/pronounciations"
 
-error() {
+log() {
 	local message="$1"
 
 	[ "$IS_TTY" -eq 0 ] &&
@@ -25,7 +25,7 @@ prompt_word() {
 	fi
 
 	[ -z "$word" ] && {
-		error "Word not selected"
+		log "Word not selected"
 		return 1
 	}
 
@@ -63,7 +63,7 @@ assert_not_null() {
 	[ "$is_null" -ne 0 ] &&
 		return 0
 
-	error "Word not found"
+	log "Word not found"
 	return 1
 }
 
@@ -71,36 +71,40 @@ assert_dictionary() {
 	[ -f "$DICTIONARY" ] && return 0
 
 	mkdir -p "$(dirname "$DICTIONARY")" || return 1
+	log 'Downloading dictionary'
 	curl -o "$DICTIONARY" \
 		'https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary.json'
+	log 'Dictionary downloaded'
 }
 
 assert_word_cache() {
 	[ -f "$CACHED_WORDS" ] && return 0
 
-	jq '. | keys | .[]' -r <"$dictionary" >"$CACHED_WORDS"
+	jq '. | keys | .[]' -r <"$DICTIONARY" >"$CACHED_WORDS"
 }
 
 assert_pronounciations() {
 	[ -f "$PRONOUNCIATIONS" ] && return 0
 
 	mkdir -p "$(dirname "$PRONOUNCIATIONS")" || return 1
+	log 'Downloading pronounciations'
 	curl -o "$PRONOUNCIATIONS" \
 		"https://raw.githubusercontent.com/open-dict-data/ipa-dict/master/data/en_US.txt"
+	log 'Pronounciations downloaded'
 }
 
 assert_dictionary || {
-	error "Failed asserting dictionary"
+	log "Failed asserting dictionary"
 	exit 1
 }
 
 assert_word_cache || {
-	error "Failed asserting word cache"
+	log "Failed asserting word cache"
 	exit 1
 }
 
 assert_pronounciations || {
-	error "Failed asserting pronounciations"
+	log "Failed asserting pronounciations"
 	exit 1
 }
 
