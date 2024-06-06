@@ -135,7 +135,7 @@ install_desktop() {
 		picom \
 		i3-wm sxhkd \
 		xclip \
-		xfce4-terminal dunst slock dmenu chromium \
+		xfce4-terminal dunst slock dmenu \
 		feh telegram-desktop mpv \
 		zathura zathura-pdf-poppler \
 		gnome-themes-extra \
@@ -144,6 +144,7 @@ install_desktop() {
 		libnotify || return 1
 
 	assert_yay && yay -S --needed \
+		brave-bin \
 		dragon-drop \
 		noto-fonts noto-fonts-emoji \
 		vazirmatn-fonts vazir-code-fonts borna-fonts \
