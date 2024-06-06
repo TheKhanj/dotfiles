@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+help() {
+	cat <<-EOF
+		Usage:
+		  texttopdf [OUT-FILE]
+	EOF
+}
+
+output="$1"
+
+[ -z "$output" ] && help && exit 1
+
+iconv -c -f utf-8 -t ascii//TRANSLIT - |
+	enscript -B -p - -f "SourceCodePro-Semibold@11" |
+	ps2pdf - "$output"

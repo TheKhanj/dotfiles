@@ -1,5 +1,5 @@
 [Unit]
-Description=TunTap Service
+Description=TunTap Device Service
 After=network.target
 Requires=network.target
 

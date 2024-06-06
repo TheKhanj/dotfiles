@@ -1,4 +1,7 @@
 [Unit]
 Description=VPN Target
 After=network.target
-Requires=xray.service tun2socks.service tuntap-route.service
+Requires=xray.service tun2socks.service
+
+[Install]
+WantedBy=multi-user.target
