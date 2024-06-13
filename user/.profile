@@ -16,7 +16,7 @@ __setup_apps() {
 	export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 	export HISTSIZE=10000
 	export HISTFILESIZE=10000
-	export NNN_PLUG='d:dragdrop;f:fzcd;b:cdpath;'
+	export NNN_PLUG='d:dragdrop;f:fzcd;b:cdpath;m:mark;'
 	export NNN_COLORS='#0a1b2c3d;1234'
 	export BROWSER="/usr/bin/chromium"
 }
