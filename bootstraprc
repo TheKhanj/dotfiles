@@ -141,7 +141,8 @@ install_desktop() {
 		gnome-themes-extra \
 		lxappearance nitrogen \
 		network-manager-applet \
-		libnotify || return 1
+		libnotify \
+		playerctl || return 1
 
 	assert_yay && yay -S --needed \
 		brave-bin \
