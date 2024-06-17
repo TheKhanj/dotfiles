@@ -33,14 +33,19 @@ w_bluetooth_battery() {
 		return
 	fi
 
-	local devices="$(bluetoothctl devices Connected | awk '{ print $2 }')"
+	devices="$(bluetoothctl devices Connected | awk '{ print $2 }')"
 
-	local ret="$(while read -r device; do
+	ret="$(while read -r device; do
 		if [ -z "$device" ]; then
 			continue
 		fi
 
-		level="$(bluetooth-headset-battery-level "$device" 2>/dev/null | grep -oE '[0-9]+%')"
+		level="$(
+			bluetoothctl info "$device" 2>/dev/null |
+				grep 'Battery Percentage:' |
+				grep -oE '\([0-9]+\)' |
+				grep -oE '[0-9]+'
+		)"'%'
 
 		if [ -z "$level" ]; then
 			continue
