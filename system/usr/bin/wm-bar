@@ -47,7 +47,7 @@ w_bluetooth_battery() {
 				grep -oE '[0-9]+'
 		)"'%'
 
-		if [ -z "$level" ]; then
+		if [ "$level" = '%' ]; then
 			continue
 		fi
 
