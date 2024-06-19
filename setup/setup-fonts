@@ -3,3 +3,36 @@
 sudo rm -rf /etc/fonts/
 sudo mkdir /etc/fonts
 sudo cp -r ./setup/fonts/* /etc/fonts/
+
+assert_font_map() {
+	local name="$1"
+	local file="$2"
+
+	local map_path='/usr/share/enscript/afm/font.map'
+	[ -f "$map_path" ] || return
+
+	sudo ln -sf "$PWD/setup/afm-fonts/$file.afm" "/usr/share/enscript/afm/$file.afm"
+
+	grep "$name" "$map_path" >/dev/null 2>&1 && return
+	echo "$name	$file" | sudo tee -a "$map_path" >/dev/null
+}
+
+assert_afm_fonts() {
+	local map="$(
+		cat <<-EOF
+			UbuntuMono-Bold        ubuntu-mono-bold
+			UbuntuMono             ubuntu-mono
+			NotoSans-Mono          noto-sans-mono
+			SourceCodePro-Semibold source-code-pro-semibold
+			SourceCodePro-Bold     source-code-pro-bold
+		EOF
+	)"
+
+	echo "$map" | while read -r line; do
+		local name="$(echo "$line" | awk '{ print $1 }')"
+		local file="$(echo "$line" | awk '{ print $2 }')"
+		assert_font_map "$name" "$file"
+	done
+}
+
+assert_afm_fonts
