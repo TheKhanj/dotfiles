@@ -25,8 +25,8 @@ w_bluetooth_battery() {
 		stat -c '%Y' "$handsfree_bluetooth_cache" 2>/dev/null || printf '0'
 	)
 	local now=$(date '+%s')
-	local _5_minutes=$(expr 5 '*' 60)
-	local ttl_threshold=$(expr $now - $_5_minutes)
+	local _30_seconds=$(expr 30)
+	local ttl_threshold=$(expr $now - $_30_seconds)
 
 	if [ $last_modified_time -gt $ttl_threshold ]; then
 		cat "$handsfree_bluetooth_cache"
