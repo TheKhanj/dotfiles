@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+
+seconds_till() {
+	local t="$1"
+
+	local now=$(date +%s)
+	local current_date=$(date +%Y-%m-%d)
+	local target_time=$(date -d "$current_date $t:00" +%s)
+
+	if [ $now -ge $target_time ]; then
+		target_time=$(date -d "$current_date $t:00 + 1 day" +%s)
+	fi
+
+	remaining_seconds=$((target_time - now))
+
+	echo $remaining_seconds
+}
+
+keep_speaker_alive() {
+	while true; do
+		play -n -c1 synth 3 whitenoise band -n 100 20 fade h 1 1 1 gain -10000 \
+			>/dev/null 2>&1
+
+		sleep 10
+	done
+}
+
+keep_speaker_alive &
+PID=$?
+
+SLEEP_TIME=$(seconds_till "$1")
+echo "sleeping $SLEEP_TIME seconds"
+sleep $SLEEP_TIME
+
+ALARM="/mnt/purple/video/music-video/lara-fabian/Lara Fabian - Je t'aime - Live in Paris, 2001 - HQ ｜｜ Emotional Performance [IYnFwUbC9A8].mp4"
+mpv --loop=inf "$ALARM"
+kill $?
