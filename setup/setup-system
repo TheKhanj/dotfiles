@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 get_host() {
-	cat /etc/hostname | tr -d '\n'
+	hostname
 }
 
 setup_xresources() {

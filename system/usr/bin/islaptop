@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-host="$(cat /etc/hostname | tr -d '\n')"
+host="$(hostname)"
 
 [ "$host" = 'peach' ] ||
 	[ "$host" = 'buddy' ] ||

@@ -36,7 +36,7 @@ install_dotfiles_deps() {
 }
 
 install_drivers() {
-	local host=$(cat /etc/hostname)
+	local host=$(hostname)
 
 	sudo pacman -S --needed \
 		pulseaudio pulseaudio-alsa pulseaudio-bluetooth pavucontrol \
