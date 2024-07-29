@@ -36,3 +36,5 @@ assert_afm_fonts() {
 }
 
 assert_afm_fonts
+
+exit 0
