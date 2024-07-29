@@ -15,8 +15,7 @@ sanitize_keyboard_name() {
 
 	echo "$keyboard_name" |
 		sed 's/ //g' |
-		sed 's/\///g' |
-		convconv -t kebab -a
+		sed 's/\///g'
 }
 
 create_touchcursor_config() {
