@@ -78,13 +78,13 @@ main() {
 	./setup/setup-nnn || exit 1
 	{
 		[ "$HEADLESS" -eq 0 ] && ./setup/setup-keyboard
-	} || exit 1
+	} || exit 1 && echo 'keyboard setup [ok]'
 	{
 		[ "$HEADLESS" -eq 0 ] && ./setup/setup-fonts
-	} || exit 1
+	} || exit 1 && echo 'font setup [ok]'
 	{
 		[ "$HEADLESS" -eq 0 ] && ./setup/setup-system
-	} || exit 1
+	} || exit 1 && echo 'system setup [ok]'
 
 	sudo locale-gen || exit 1
 }
