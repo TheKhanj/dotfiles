@@ -7,7 +7,8 @@ get_host() {
 setup_xresources() {
 	local host="$(get_host)"
 
-	if [ "$host" = "slut" ]; then
+	if [ "$host" = "slut" ] || [ "$host" = "lucy" ]; then
+		echo host is lucy
 		cat >"$HOME/.Xresources" <<-EOF
 			Xft.dpi: 180
 		EOF
@@ -21,7 +22,7 @@ setup_xresources() {
 setup_screen_scale() {
 	local host="$(get_host)"
 
-	[ "$host" != "slut" ] && return
+	[ "$host" != "slut" ] && [ "$host" != "lucy" ] && return
 
 	sudo tee /etc/profile.d/screen-scale.sh <<-EOF
 		export QT_AUTO_SCREEN_SCALE_FACTOR=1
