@@ -5,11 +5,22 @@
 
 exp_time=2000
 notification_id=99998
-step=32
+
+if [ "$(hostname)" = 'lucy' ]; then
+	step=2048
+else
+	step=32
+fi
+
 
 get_device() {
 	local dir='/sys/class/backlight'
-	local subdir="$(ls "$dir")"
+	local subdir="$(ls "$dir" | head -n 1)"
+
+	if [ "$(hostname)" = 'lucy' ]; then
+		subdir="gmux_backlight"
+	fi
+
 	echo -n "$dir/$subdir/brightness"
 }
 
