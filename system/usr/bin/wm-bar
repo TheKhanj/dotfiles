@@ -58,6 +58,18 @@ w_bluetooth_battery() {
 	cat "$handsfree_bluetooth_cache"
 }
 
+w_cputemp() {
+	local temp="$(
+		sensors coretemp-isa-0000 |
+			grep Package |
+			head -n 1 |
+			grep -oE '[0-9]*\.[0-9]..' |
+			head -n 1
+	)"
+
+	printf "🌡️ %s" "$temp"
+}
+
 w_date() {
 	printf "📆 %s" "$(date "+%a %d-%m-%y %T")"
 }
@@ -83,9 +95,9 @@ get_bar() {
 
 set_widgets() {
 	if islaptop; then
-		widgets=('bluetooth_battery' 'battery' 'date')
+		widgets=('bluetooth_battery' 'cputemp' 'battery' 'date')
 	else
-		widgets=('bluetooth_battery' 'date')
+		widgets=('bluetooth_battery' 'cputemp' 'date')
 	fi
 }
 
