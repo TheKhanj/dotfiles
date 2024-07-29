@@ -4,6 +4,7 @@ host="$(hostname)"
 
 [ "$host" = 'peach' ] ||
 	[ "$host" = 'buddy' ] ||
-	[ "$host" = 'slut' ]
+	[ "$host" = 'slut' ] ||
+	[ "$host" = 'lucy' ]
 
 exit $?
