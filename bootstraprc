@@ -82,7 +82,6 @@ install_common() {
 		lshw ncdu \
 		which \
 		cpupower \
-		networkmanager \
 		xdotool \
 		bc \
 		yt-dlp transmission-cli \
@@ -147,7 +146,6 @@ install_desktop() {
 		zathura zathura-pdf-poppler \
 		gnome-themes-extra \
 		lxappearance nitrogen \
-		network-manager-applet \
 		libnotify \
 		playerctl || return 1
 
