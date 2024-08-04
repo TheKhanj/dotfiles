@@ -59,9 +59,15 @@ w_bluetooth_battery() {
 }
 
 w_cputemp() {
+	local sensor_name='coretemp-isa-0000'
+	local grp='Package'
+	if [ "$(hostname)" = 'black' ]; then
+		sensor_name='amdgpu-pci-0e00'
+		grp='edge:'
+	fi
 	local temp="$(
-		sensors coretemp-isa-0000 |
-			grep Package |
+		sensors "$sensor_name" |
+			grep "$grp" |
 			head -n 1 |
 			grep -oE '[0-9]*\.[0-9]..' |
 			head -n 1
