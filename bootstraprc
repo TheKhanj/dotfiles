@@ -98,6 +98,7 @@ install_dev() {
 		go gofumpt \
 		entr \
 		cmake \
+		meson mesonlsp ninja \
 		clang gcc gdb make man-pages pkgconf \
 		python-pip pyenv \
 		rust-analyzer rustup \
