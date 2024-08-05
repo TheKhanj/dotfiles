@@ -101,6 +101,7 @@ install_dev() {
 		meson mesonlsp ninja \
 		clang gcc gdb make man-pages pkgconf \
 		python-pip pyenv \
+		re2c \
 		rust-analyzer rustup \
 		shfmt stylua \
 		base-devel \
