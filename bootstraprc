@@ -39,7 +39,7 @@ install_drivers() {
 	local host=$(hostname)
 
 	sudo pacman -S --needed \
-		pulseaudio pulseaudio-alsa pulseaudio-bluetooth pavucontrol \
+		pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse \
 		bluez bluez-utils || rteurn 1
 
 	case "$host" in
