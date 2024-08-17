@@ -95,7 +95,7 @@ install_common() {
 
 install_dev() {
 	sudo pacman -S --needed \
-		go gofumpt \
+		go gofumpt gopls \
 		entr \
 		cmake \
 		meson mesonlsp ninja \
