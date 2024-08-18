@@ -100,7 +100,7 @@ install_dev() {
 		cmake \
 		meson mesonlsp ninja \
 		clang gcc gdb make man-pages pkgconf \
-		python-pip pyenv \
+		python-pip pyenv python-black \
 		re2c \
 		rust-analyzer rustup \
 		shfmt stylua \
