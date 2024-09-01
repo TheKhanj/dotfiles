@@ -85,7 +85,7 @@ install_common() {
 		xdotool \
 		bc \
 		yt-dlp transmission-cli \
-		iwd \
+		iwd dhcpcd \
 		libimobiledevice usbmuxd \
 		rsync || return 1
 
