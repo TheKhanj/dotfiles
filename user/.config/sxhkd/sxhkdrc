@@ -40,7 +40,7 @@ super + backslash
 	playerctl play-pause
 XF86AudioPlay
 	playerctl play-pause
-alt + n
+super + quotedbl
 	xmouseless
 
 # vi: ft=sh
