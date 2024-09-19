@@ -1,5 +1,10 @@
-link-style=green
-active-link-style=green,bold
+#var
+link-style=yellow
+active-link-style=yellow,bold
 match-style=underline,bold,red
+
+#info
+\mn down-line
+\mp up-line
 
 # vi: ft=cfg
