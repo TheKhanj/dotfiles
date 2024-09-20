@@ -148,11 +148,14 @@ main() {
 
 	assert_not_null "$meaning" || exit 1
 
+	echo "Word: $word"
+
 	local pronounciation="$(get_pronounciation "$word")"
 	[ -n "$pronounciation" ] && {
 		echo "Pronounciation: $pronounciation"
-		echo
 	}
+
+	echo
 
 	echo "$meaning" | format
 }
