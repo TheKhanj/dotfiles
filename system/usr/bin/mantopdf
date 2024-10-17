@@ -1,5 +1,22 @@
 #!/usr/bin/env sh
 
+command -v pdfunite 2>&1 >/dev/null || {
+	echo "pdfunite not found. install it first."
+	exit 1
+}
+command -v parallel 2>&1 >/dev/null || {
+	echo "parallel not found. install it first."
+	exit 1
+}
+command -v cowthink 2>&1 >/dev/null || {
+	echo "cowsay not found. install it first."
+	exit 1
+}
+command -v enscript 2>&1 >/dev/null || {
+	echo "enscript not found. install it first."
+	exit 1
+}
+
 help() {
 	cat <<-EOF
 		mantopdf [PACKAGE-NAME]
