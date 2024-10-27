@@ -21,6 +21,10 @@ w_battery() {
 handsfree_bluetooth_cache="/tmp/handsfree_bluetooth_cache"
 
 w_bluetooth_battery() {
+	if ! systemctl is-active --quiet bluetooth.service; then
+		return
+	fi
+
 	local last_modified_time=$(
 		stat -c '%Y' "$handsfree_bluetooth_cache" 2>/dev/null || printf '0'
 	)
