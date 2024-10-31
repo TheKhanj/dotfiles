@@ -36,7 +36,7 @@ get_direct_device() {
 }
 
 get_direct_ips() {
-	local direct_ips=(193.151.158.48 193.151.155.127 185.206.95.121)
+	local direct_ips=(193.151.158.48 193.151.155.127 193.151.131.148)
 
 	echo "${direct_ips[@]}"
 }
