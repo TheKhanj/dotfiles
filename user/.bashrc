@@ -57,7 +57,7 @@ n() {
 		return
 	}
 	export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-	command nnn -uHd "$@"
+	command nnn -uHAd "$@"
 
 	[ ! -f "$NNN_TMPFILE" ] || {
 		. "$NNN_TMPFILE"
