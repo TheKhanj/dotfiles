@@ -46,7 +46,6 @@ __setup_shell() {
 	export PS1="$(printf "%s@%s:\w\$ " "$USER" "$hostname")"
 
 	set -o vi
-	bind '"kj": "\e"'
 
 	__setup_fzf
 	__setup_bash_clipboard
@@ -58,7 +57,7 @@ n() {
 		return
 	}
 	export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-	command nnn -uHAd "$@"
+	command nnn -uHd "$@"
 
 	[ ! -f "$NNN_TMPFILE" ] || {
 		. "$NNN_TMPFILE"
