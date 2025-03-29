@@ -70,12 +70,24 @@ setup_symlinks() {
 	return $?
 }
 
+as_root() {
+	if [ "$UID" -eq 0 ]; then
+		"$@"
+		return $?
+	else
+		sudo "$@"
+		return $?
+	fi
+}
+
 main() {
 	get_config
 	setup_symlinks user || exit 1
 	setup_symlinks system || exit 1
 
 	./setup/setup-nnn || exit 1
+	as_root ./setup/setup-vpn || exit 1
+
 	{
 		[ "$HEADLESS" -eq 0 ] && ./setup/setup-keyboard
 	} || exit 1 && echo 'keyboard setup [ok]'
