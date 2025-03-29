@@ -1,0 +1,5 @@
+just add this shit later, I wanna play counter right now, have to go.
+
+sudo modprobe v4l2loopback devices=1 video_nr=11 card_label="DroidCam" exclusive_caps=1
+ffmpeg -i http://192.168.40.234:4747/video -f v4l2 -vcodec rawvideo -pix_fmt yuv420p /dev/video10
+mpv http://192.168.40.234:4747/video
