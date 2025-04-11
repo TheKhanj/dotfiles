@@ -1,0 +1,55 @@
+#!/usr/bin/env sh
+
+start() {
+	ip tuntap add mode tun dev tun0
+	ip addr add 169.254.10.1/24 dev tun0
+	ip link set dev tun0 up
+}
+
+stop() {
+	ip tuntap del dev tun0 mode tun
+}
+
+pkg_install() {
+	if [ -f /usr/bin/pacman ]; then
+		pacman -S "$1"
+	elif [ -f /usr/bin/apt ]; then
+		apt install -y $1
+	fi
+}
+
+route() {
+	[ -f /usr/bin/jq ] || pkg_install jq
+
+	local vpn_server_ip="$(
+		cat /etc/vpn/config.json |
+			jq '.outbounds[0].settings.vnext[0].address' -r
+	)"
+
+	local old_gateway="$(
+		ip route | grep -P '(?<=default via )([^ ]*)' -o
+	)"
+
+	echo -n "$old_gateway" >/tmp/tun0-old-gateway
+
+	ip route del default
+	ip route add default via 169.254.10.1
+	ip route add ${vpn_server_ip}/32 via $old_gateway
+}
+
+unroute() {
+	[ -f /usr/bin/jq ] || pkg_install jq
+
+	local vpn_server_ip="$(
+		cat /etc/vpn/config.json |
+			jq '.outbounds[0].settings.vnext[0].address' -r
+	)"
+
+	local old_gateway="$(cat /tmp/tun0-old-gateway)"
+
+	ip route del default
+	ip route del ${vpn_server_ip}/32 via $old_gateway
+	ip route add default via $old_gateway
+}
+
+$1

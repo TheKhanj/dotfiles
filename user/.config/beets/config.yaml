@@ -1,0 +1,4 @@
+directory: /mnt/purple/music/beets
+library: ~/.config/beets/beets.db
+import:
+    incremental: yes

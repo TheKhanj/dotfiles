@@ -1,0 +1,120 @@
+#!/usr/bin/env sh
+
+pkg_install() {
+	if [ -f /usr/bin/pacman ]; then
+		pacman -S "$1"
+	elif [ -f /usr/bin/apt ]; then
+		apt install -y $1
+	fi
+}
+
+install_tun2socks() {
+	echo 'installing tun2socks'
+
+	mkdir /tmp/tun2socks
+	cd /tmp/tun2socks
+
+	curl -LO 'https://github.com/xjasonlyu/tun2socks/releases/download/v2.5.2/tun2socks-linux-amd64.zip' || {
+		echo 'failed downloading tun2socks zip file'
+		return 1
+	}
+
+	[ -f /usr/bin/unzip ] || pkg_install unzip
+
+	unzip tun2socks-linux-amd64.zip
+	cp tun2socks-linux-amd64 /usr/bin/tun2socks
+
+	cd -
+	rm /tmp/tun2socks -r
+	echo 'installed tun2socks'
+}
+
+install_xray() {
+	[ -f /usr/bin/unzip ] || pkg_install unzip
+	[ -f /usr/bin/curl ] || pkg_install curl
+
+	echo 'installing xray...'
+
+	mkdir /tmp/xray
+	cd /tmp/xray
+
+	curl https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip -OL || {
+		echo 'error: failed downloading xray zip file'
+		return 1
+	}
+
+	unzip Xray-linux-64.zip
+	cp xray /usr/bin
+
+	cd -
+	rm -r /tmp/xray
+	echo 'installed xray'
+}
+
+main() {
+	[ -f /etc/vpn/config.json ] || {
+		echo '/etc/vpn/config.json not found'
+		echo 'copy it from another device'
+		return 1
+	}
+
+	[ -f /usr/bin/tun2socks ] || {
+		echo 'tun2socks is not installed'
+		install_tun2socks || return
+	}
+
+	[ -f /usr/bin/xray ] || {
+		echo 'xray is not installed'
+		install_xray || return
+	}
+
+	cat >/etc/systemd/system/tun0.service <<-EOF
+		[Unit]
+		Description=Tun0 Device Service
+		After=network.target
+		Requires=network.target
+
+		[Service]
+		Type=oneshot
+		ExecStart=/usr/bin/tun0 start
+		ExecStop=/usr/bin/tun0 stop
+		RemainAfterExit=true
+
+		[Install]
+		RequiredBy=tun2socks.service
+	EOF
+
+	cat >/etc/systemd/system/xray.service <<-EOF
+		[Unit]
+		Description=Xray Service
+		After=network.target
+
+		[Service]
+		ExecStart=/usr/bin/xray -c /etc/vpn/config.json
+		Restart=always
+		RestartSec=10s
+
+		[Install]
+		WantedBy=multi-user.target
+	EOF
+
+	cat >/etc/systemd/system/tun2socks.service <<-EOF
+		[Unit]
+		Description=Tun2socks Service
+		After=tun0.service xray.service
+		Requires=tun0.service xray.service
+
+		[Service]
+		ExecStart=/usr/bin/tun2socks -device tun0 -proxy socks5://127.0.0.1:10808
+
+		[Install]
+		WantedBy=multi-user.target
+	EOF
+
+	systemctl daemon-reload
+	systemctl enable --now tun2socks
+
+	install -m 766 bin/tun0 /usr/bin
+}
+
+main

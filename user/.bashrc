@@ -46,7 +46,6 @@ __setup_shell() {
 	export PS1="$(printf "%s@%s:\w\$ " "$USER" "$hostname")"
 
 	set -o vi
-	bind '"kj": "\e"'
 
 	__setup_fzf
 	__setup_bash_clipboard
