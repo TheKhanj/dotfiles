@@ -30,6 +30,18 @@ move() {
 	done
 }
 
+nums() {
+	local win_id=$1
+
+	while true; do
+		local move=$(seq 3 | shuf | head -n 1)
+
+		xdotool keydown --window $win_id $move
+
+		sleep 30
+	done
+}
+
 mouse() {
 	local win_id=$1
 
@@ -53,7 +65,10 @@ main() {
 	mouse $win_id &
 	local pid2=$!
 
-	wait $pid1 $pid2
+	nums $win_id &
+	local pid3=$!
+
+	wait $pid1 $pid2 $pid3
 }
 
 main
