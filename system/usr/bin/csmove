@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 
 get_random_move() {
-	local num=$(awk 'BEGIN { srand(); print int(rand() * 5) }')
+	local num=$(seq 6 | shuf | head -n 1)
 
 	case "$num" in
-	0) echo w ;;
-	1) echo a ;;
-	2) echo s ;;
-	3) echo d ;;
-	4) echo space ;;
+	1) echo w ;;
+	2) echo a ;;
+	3) echo s ;;
+	4) echo d ;;
+	5) echo space ;;
+	6) echo t ;;
 	esac
 }
 
@@ -37,6 +38,8 @@ nums() {
 		local move=$(seq 3 | shuf | head -n 1)
 
 		xdotool keydown --window $win_id $move
+		sleep 0.5
+		xdotool click --window $win_id 1
 
 		sleep 30
 	done
