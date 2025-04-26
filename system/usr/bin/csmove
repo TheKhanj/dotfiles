@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+TIME="$1"
+
 get_random_move() {
 	local num=$(seq 6 | shuf | head -n 1)
 
@@ -70,6 +72,14 @@ main() {
 
 	nums $win_id &
 	local pid3=$!
+
+	trap 'kill 0' SIGINT
+	if ! [ -z "$TIME" ]; then
+		echo "sleeping $TIME minutes..."
+		sleep $(($TIME * 60))
+		echo "killing program"
+		kill 0
+	fi
 
 	wait $pid1 $pid2 $pid3
 }
