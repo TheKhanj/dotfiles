@@ -29,6 +29,7 @@ bindsym $mod+a layout toggle splitv splith stacking
 
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+s sticky toggle
 bindsym $mod+u focus parent
 bindsym $mod+d focus child
 bindsym $mod+Tab workspace back_and_forth
