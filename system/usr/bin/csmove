@@ -1,0 +1,87 @@
+#!/usr/bin/env sh
+
+TIME="$1"
+
+get_random_move() {
+	local num=$(seq 6 | shuf | head -n 1)
+
+	case "$num" in
+	1) echo w ;;
+	2) echo a ;;
+	3) echo s ;;
+	4) echo d ;;
+	5) echo space ;;
+	6) echo t ;;
+	esac
+}
+
+get_random_time() {
+	awk -v min=0.3 -v max=3 'BEGIN { srand(); print min + (max - min) * rand() }'
+}
+
+move() {
+	local win_id=$1
+
+	while true; do
+		local move=$(get_random_move)
+
+		xdotool keydown --window $win_id $move
+		sleep $(get_random_time)
+		xdotool keyup --window $win_id $move
+
+		sleep 1
+	done
+}
+
+nums() {
+	local win_id=$1
+
+	while true; do
+		local move=$(seq 3 | shuf | head -n 1)
+
+		xdotool keydown --window $win_id $move
+		sleep 0.5
+		xdotool click --window $win_id 1
+
+		sleep 30
+	done
+}
+
+mouse() {
+	local win_id=$1
+
+	while true; do
+		local move=$(get_random_move)
+
+		xdotool mousedown --window $win_id 1
+		sleep $(get_random_time)
+		xdotool mouseup --window $win_id 1
+
+		sleep 1
+	done
+}
+
+main() {
+	local win_id="$(wmctrl -l | grep 'Counter-Strike Source - Vulkan - 64 Bit' | awk '{ print $1 }')"
+
+	move $win_id &
+	local pid1=$!
+
+	mouse $win_id &
+	local pid2=$!
+
+	nums $win_id &
+	local pid3=$!
+
+	trap 'kill 0' SIGINT
+	if ! [ -z "$TIME" ]; then
+		echo "sleeping $TIME minutes..."
+		sleep $(($TIME * 60))
+		echo "killing program"
+		kill 0
+	fi
+
+	wait $pid1 $pid2 $pid3
+}
+
+main
