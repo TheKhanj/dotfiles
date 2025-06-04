@@ -34,8 +34,8 @@ setup_screen_scale() {
 setup_trackpad() {
 	if [ "$(hostname)" = 'lucy' ]; then
 		sudo tee /etc/profile.d/touchpad.sh <<-EOF
-			xinput set-prop bcm5974 'libinput Natural Scrolling Enabled' 0
-			xinput set-prop bcm5974 'libinput Accel Speed' 1
+			xinput set-prop 13 'libinput Natural Scrolling Enabled' 0
+			xinput set-prop 13 'libinput Accel Speed' 0.5
 		EOF
 	fi
 }
