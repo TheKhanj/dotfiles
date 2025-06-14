@@ -1,6 +1,7 @@
 [user]
 	email = pooyankhan@gmail.com
 	name = Pooyan Khanjankhani
+	signingkey = C3DEBEA24960DB95E895D490346896DF1FA5EDD1
 [pull]
 	rebase = false
 [merge]
@@ -35,3 +36,5 @@
 	clean = git-lfs clean -- %f
 [init]
 	defaultBranch = master
+[commit]
+	gpgsign = true
