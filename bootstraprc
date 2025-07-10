@@ -60,9 +60,10 @@ install_drivers() {
 	"lucy")
 		sudo pacman -S --needed \
 			xf86-video-intel xf86-video-amdgpu \
-			libva-intel-driver libva-mesa-driver libva \
+			libva libva-intel-driver libva-mesa-driver libva-utils \
+			intel-media-driver \
 			mesa \
-			vulkan-intel vulkan-radeon
+			vulkan-intel vulkan-radeon vulkan-tools
 		;;
 	*)
 		echo "installing drivers for $host is not implemented"
