@@ -1,8 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
+VPN_GATEWAY_IP=169.254.10.1
 
 start() {
 	ip tuntap add mode tun dev tun0
-	ip addr add 169.254.10.1/24 dev tun0
+	ip addr add ${VPN_GATEWAY_IP}/24 dev tun0
 	ip link set dev tun0 up
 }
 
@@ -18,14 +20,15 @@ pkg_install() {
 	fi
 }
 
-route() {
+get_vpn_ip() {
 	[ -f /usr/bin/jq ] || pkg_install jq
 
-	local vpn_server_ip="$(
-		cat /etc/vpn/config.json |
-			jq '.outbounds[0].settings.vnext[0].address' -r
-	)"
+	cat /etc/vpn/config.json |
+		jq '.outbounds[0].settings.vnext[0].address' -r
+}
 
+route() {
+	local vpn_server_ip="$(get_vpn_ip)"
 	local old_gateway="$(
 		ip route | grep -P '(?<=default via )([^ ]*)' -o
 	)"
@@ -33,8 +36,24 @@ route() {
 	echo -n "$old_gateway" >/tmp/tun0-old-gateway
 
 	ip route del default
-	ip route add default via 169.254.10.1
+	ip route add default via $VPN_GATEWAY_IP
 	ip route add ${vpn_server_ip}/32 via $old_gateway
+}
+
+lana-route() {
+	. /etc/vpn/uks
+
+	for uk in "${UKS[@]}"; do
+		ip route add ${uk}/32 via ${VPN_GATEWAY_IP}
+	done
+}
+
+lana-unroute() {
+	. /etc/vpn/uks
+
+	for uk in "${UKS[@]}"; do
+		ip route del ${uk}/32 via ${VPN_GATEWAY_IP}
+	done
 }
 
 unroute() {
