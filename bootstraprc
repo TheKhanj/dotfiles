@@ -47,7 +47,7 @@ install_drivers() {
 		sudo pacman -S --needed \
 			xf86-video-intel \
 			libva-intel-driver libva \
-			mesa \
+			mesa mesa-utils \
 			vulkan-intel
 		;;
 	"black")
