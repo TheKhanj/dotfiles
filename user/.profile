@@ -19,6 +19,7 @@ __setup_apps() {
 	export NNN_PLUG='d:dragdrop;f:fzcd;b:cdpath;m:mark;'
 	export NNN_COLORS='#0a1b2c3d;1234'
 	export BROWSER="/usr/bin/chromium"
+	export GPG_TTY=$(tty)
 
 	[ "$(hostname)" = "lana" ] &&
 		export BASH_SILENCE_DEPRECATION_WARNING=1
