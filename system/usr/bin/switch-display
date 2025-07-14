@@ -13,11 +13,22 @@ deactivate_display() {
 run_misc() {
 	sleep 5
 	nitrogen --restore
+
+	if [ "$(hostname)" = "lucy" ]; then
+		if [ "$activating" = "DisplayPort-2" ]; then
+			sed 's/^Xft.dpi: .*/Xft.dpi: 100/' ~/.Xresources -i
+		else
+			sed 's/^Xft.dpi: .*/Xft.dpi: 180/' ~/.Xresources -i
+		fi
+	fi
+
 	xrdb -merge ~/.Xresources
 }
 
 activate_display() {
-	xrandr --output "$1" --auto
+	local activating="$1"
+
+	xrandr --output "$activating" --auto
 
 	run_misc &
 }
