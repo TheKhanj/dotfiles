@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+
+sync() {
+	vdirsyncer discover
+	vdirsyncer sync --force-delete
+}
+
+install() {
+	local vdirsyncer=".config/vdirsyncer/config"
+	mkdir -p "$(dirname "$vdirsyncer")"
+
+	cat >"$vdirsyncer" <<-EOF
+		[general]
+		status_path = "~/.vdirsyncer/status/"
+
+		[pair calendar]
+		a = "local"
+		b = "caldav"
+		collections = ["from b"]
+		conflict_resolution = "b wins"
+
+		[storage local]
+		type = "filesystem"
+		path = "~/calendar/"
+		fileext = ".ics"
+
+		[storage caldav]
+		type = "caldav"
+
+		url = "https://thekhanj.ir/radicale/"
+		username = "khanj"
+		password = "$(pass show primary)"
+
+	EOF
+
+	echo '# vi: ft=toml' >>"$vdirsyncer"
+
+	local khal="$HOME/.config/khal/config"
+	mkdir -p "$(dirname "$khal")"
+
+	cat >"$khal" <<-EOF
+		[calendars]
+		[[personal]]
+		path = ~/calendar/personal
+		[[power-shortage]]
+		path = ~/calendar/power-shortage
+		[[work]]
+		path = ~/calendar/work
+	EOF
+}
+
+"$1"

@@ -87,6 +87,7 @@ main() {
 
 	./setup/setup-nnn || exit 1
 	as_root ./setup/setup-vpn || exit 1
+	./system/usr/bin/caln install || exit 1
 
 	{
 		[ "$HEADLESS" -eq 0 ] && ./setup/setup-keyboard
