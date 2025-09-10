@@ -4,6 +4,10 @@ __setup_path() {
 	export PATH="$HOME/.cargo/bin:$PATH"
 	export PATH="$HOME/.volta/bin:$PATH"
 	export PATH="$HOME/.pyenv/shims:$PATH"
+
+	local ruby_dir="$HOME/.local/share/gem/ruby/"
+	local ruby_version="$(ls "$ruby_dir" | sort | tail -n 1)"
+	export PATH="$ruby_dir/$ruby_version/bin:$PATH"
 }
 
 __setup_apps() {
