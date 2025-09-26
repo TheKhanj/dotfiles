@@ -51,7 +51,7 @@ __setup_shell() {
 	. "$HOME/.profile"
 	[ -n "$TMUX" ] && export TERM='tmux-256color'
 	local hostname="$(hostname)"
-	export PS1="$(printf "%s%s@%s " "$(__get_user_type)" "$USER" "$hostname")"
+	export PS1="$(printf "%s %s@%s:\W " "$(__get_user_type)" "$USER" "$hostname")"
 
 	set -o vi
 
