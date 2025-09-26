@@ -39,11 +39,19 @@ __setup_bash_clipboard() {
 	bind -m vi-command -x '"dd": __kill_line_to_clipboard'
 }
 
+__get_user_type() {
+	if [ "$USER" = "root" ]; then
+		printf "#"
+	else
+		printf "~"
+	fi
+}
+
 __setup_shell() {
 	. "$HOME/.profile"
 	[ -n "$TMUX" ] && export TERM='tmux-256color'
 	local hostname="$(hostname)"
-	export PS1="$(printf "%s@%s:\w\$ " "$USER" "$hostname")"
+	export PS1="$(printf "%s%s@%s " "$(__get_user_type)" "$USER" "$hostname")"
 
 	set -o vi
 
