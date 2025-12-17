@@ -2,6 +2,6 @@
 
 for path in "$@"; do
 	echo "$path:"
-	git shortlog -sn -- "$path" | head -n 5
+	git shortlog -sn HEAD -- "$path" | head -n 5
 	echo
 done
