@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+for path in "$@"; do
+	printf "%s      %s\n" "$path" "$(
+		cloc "$path" |
+			grep ^SUM |
+			awk '{ print $5 }'
+	)"
+done

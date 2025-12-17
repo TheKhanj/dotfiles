@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-for dir in */; do
-	echo "$dir:"
-	git shortlog -sn -- "$dir" | head -n 5
-	echo
-done

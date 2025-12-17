@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+for path in "$@"; do
+	echo "$path:"
+	git shortlog -sn -- "$path" | head -n 5
+	echo
+done

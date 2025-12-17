@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-for dir in */; do
-	printf "%s      %s\n" "$dir" "$(cloc "$dir" |
-		grep ^SUM |
-		awk '{ print $5 }')"
-done
