@@ -1,4 +1,7 @@
-bindkey "^[i" next
-bindkey "^[o" prev
-bindkey "^[I" bumpleft
-bindkey "^[O" bumpright
+bindkey "^[o" next
+bindkey "^[i" prev
+bindkey "^[I" number -1
+bindkey "^[O" number +1
+
+hardstatus alwayslastline
+hardstatus string "%{+b}[%S]%{-} %?%-w%?%{+b1r}%n %t%{-}%?%+w%?"
