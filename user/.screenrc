@@ -1,0 +1,4 @@
+bindkey "^[i" next
+bindkey "^[o" prev
+bindkey "^[I" bumpleft
+bindkey "^[O" bumpright
