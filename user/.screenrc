@@ -4,4 +4,4 @@ bindkey "^[I" number -1
 bindkey "^[O" number +1
 
 hardstatus alwayslastline
-hardstatus string "%{+b}[%S]%{-} %?%-w%?%{+b1r}%n %t%{-}%?%+w%?"
+hardstatus string "%{+b}[%S]%{-} %?%-w%?%{+b1r} %n %t %{-}%?%+w%?"
