@@ -15,4 +15,4 @@ words=$(
 )
 headers=",Word,Translation"
 
-xfce4-terminal -e "sh -c 'echo -e \"$headers\n\" \"$words\" | vd -f csv -'"
+st -e "sh -c 'echo -e \"$headers\n\" \"$words\" | vd -f csv -'"

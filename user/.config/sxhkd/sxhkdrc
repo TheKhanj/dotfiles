@@ -1,5 +1,5 @@
 super + Return
-	xfce4-terminal
+	st
 super + p
 	dmenu_run
 XF86MonBrightness{Up,Down}
