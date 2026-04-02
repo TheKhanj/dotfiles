@@ -46,7 +46,7 @@ pager() {
 	local tmp="$(mktemp -u)"
 	echo "$stdin" >"$tmp"
 
-	st -e "bash -c '. \"$HOME/.profile\"; $p \"$tmp\"; rm \"$tmp\"'"
+	st -e /usr/bin/bash -c ". \"$HOME/.profile\"; $p \"$tmp\"; rm \"$tmp\""
 }
 
 assert_not_null() {
