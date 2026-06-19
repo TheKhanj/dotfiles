@@ -12,7 +12,7 @@ usage() {
 	  -s, --sort <c|n|t>  Sort by: c=count, n=name, t=type (default: c)
 	  -r, --reverse     Reverse sort order
 	  -H, --human       Human-readable numbers (1.2K, 3.4M)
-	  -T, --total       Show total line at end
+	  -n, --no-total    Hide total line (shown by default)
 	  -b, --binary      Include binary files in count (default: skip)
 	  -h, --help        Show this help
 
@@ -32,10 +32,10 @@ filter=a
 sort_key=c
 reverse=0
 human=0
-show_total=0
+show_total=1
 binary=0
 
-opts=$(getopt -o d:t:s:rHTbh -l depth:,type:,sort:,reverse,human,total,binary,help -n lc -- "$@") || exit 1
+opts=$(getopt -o d:t:s:rHnbh -l depth:,type:,sort:,reverse,human,no-total,binary,help -n lc -- "$@") || exit 1
 eval set -- "$opts"
 
 while [ $# -gt 0 ]; do
@@ -45,8 +45,8 @@ while [ $# -gt 0 ]; do
 		-s|--sort)    sort_key="$2"; shift 2 ;;
 		-r|--reverse) reverse=1;   shift ;;
 		-H|--human)   human=1;     shift ;;
-		-T|--total)   show_total=1; shift ;;
-		-b|--binary)  binary=1;     shift ;;
+		-n|--no-total) show_total=0; shift ;;
+		-b|--binary)   binary=1;     shift ;;
 		-h|--help)    usage ;;
 		--)           shift; break ;;
 		*)            die "unknown option: $1" ;;
