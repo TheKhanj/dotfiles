@@ -46,11 +46,11 @@ count() {
 	local f="$1" files
 	files="$(list_files "$f")"
 	if [ "$binary" -eq 0 ]; then
-		files=$(echo "$files" | xargs grep -Il . 2>/dev/null) || return 1
+		files=$(echo "$files" | xargs -d '\n' grep -Il . 2>/dev/null) || return 1
 		[ -z "$files" ] && return 1
 	fi
 	[ -z "$files" ] && return 1
-	echo "$files" | xargs cat 2>/dev/null | wc -l
+	echo "$files" | xargs -d '\n' cat 2>/dev/null | wc -l
 }
 
 parse_opts() {
