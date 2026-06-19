@@ -115,7 +115,7 @@ collect() {
 
 	if [ "$filter" != f ]; then
 		find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d -print0 2>/dev/null |
-			parallel -0 -j "$jobs" _lc_job d {} >> "$results"
+			parallel -0 -j "$jobs" _lc_job d {}/ >> "$results"
 	fi
 
 	if [ "$filter" != d ]; then
