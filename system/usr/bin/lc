@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+dir="${1:-.}"
+depth="${2:-1}"
+
+count() {
+	f="$1"
+	files="$(git ls-files "$f")"
+	if [ -z "$files" ]; then
+		return 1
+	fi
+
+	echo "$files" | xargs cat | wc -l
+}
+
+count_and_print() {
+	f="$1"
+	t="$2"
+
+	cnt="$(count "$f")" || return 0
+
+	printf "%s %-6s %s\n" "$t" "$cnt" "$f"
+}
+
+count_all() {
+	{
+		find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d |
+			while read -r subdir; do
+				count_and_print "$subdir" d
+			done
+	} 2>/dev/null
+
+	find "$dir" -maxdepth "$depth" -mindepth 1 -type f |
+		while read -r file; do
+			count_and_print "$file" f
+		done
+}
+
+count_all | sort -k2 -h
