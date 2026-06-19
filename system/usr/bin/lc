@@ -13,6 +13,7 @@ usage() {
 	  -r, --reverse     Reverse sort order
 	  -H, --human       Human-readable numbers (1.2K, 3.4M)
 	  -T, --total       Show total line at end
+	  -b, --binary      Include binary files in count (default: skip)
 	  -h, --help        Show this help
 
 	Examples:
@@ -32,8 +33,9 @@ sort_key=c
 reverse=0
 human=0
 show_total=0
+binary=0
 
-opts=$(getopt -o d:t:s:rHTh -l depth:,type:,sort:,reverse,human,total,help -n lc -- "$@") || exit 1
+opts=$(getopt -o d:t:s:rHTbh -l depth:,type:,sort:,reverse,human,total,binary,help -n lc -- "$@") || exit 1
 eval set -- "$opts"
 
 while [ $# -gt 0 ]; do
@@ -44,6 +46,7 @@ while [ $# -gt 0 ]; do
 		-r|--reverse) reverse=1;   shift ;;
 		-H|--human)   human=1;     shift ;;
 		-T|--total)   show_total=1; shift ;;
+		-b|--binary)  binary=1;     shift ;;
 		-h|--help)    usage ;;
 		--)           shift; break ;;
 		*)            die "unknown option: $1" ;;
@@ -69,6 +72,10 @@ esac
 count() {
 	local f="$1" files
 	files="$(git ls-files "$f")"
+	if [ "$binary" -eq 0 ]; then
+		files=$(echo "$files" | xargs grep -Il . 2>/dev/null) || return 1
+		[ -z "$files" ] && return 1
+	fi
 	[ -z "$files" ] && return 1
 	echo "$files" | xargs cat 2>/dev/null | wc -l
 }
