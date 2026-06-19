@@ -103,7 +103,7 @@ if [ "$filter" != f ]; then
 	while read -r subdir; do
 		c=$(count "$subdir") || continue
 		total=$((total + c))
-		printf "d %d %s\n" "$c" "$subdir" >> "$results"
+		printf "d %d %s\n" "$c" "$subdir/" >> "$results"
 	done < <(find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d 2>/dev/null)
 fi
 
