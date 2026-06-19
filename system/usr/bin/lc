@@ -1,38 +1,116 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	cat <<-EOF >&2
+	Usage: lc [options] [directory]
+	Count lines of git-tracked files grouped by subdirectory/file.
+
+	Options:
+	  -d, --depth <n>   Max traversal depth (default: 1)
+	  -t, --type <a|f|d>  Filter: a=all, f=files, d=dirs (default: a)
+	  -s, --sort <c|n|t>  Sort by: c=count, n=name, t=type (default: c)
+	  -r, --reverse     Reverse sort order
+	  -H, --human       Human-readable numbers (1.2K, 3.4M)
+	  -T, --total       Show total line at end
+	  -h, --help        Show this help
+
+	Examples:
+	  lc
+	  lc src
+	  lc -d 2 -t d src
+	  lc -s n -r
+	EOF
+	exit 0
+}
+
+die() { echo "lc: $1" >&2; exit 1; }
+
+depth=1
+filter=a
+sort_key=c
+reverse=0
+human=0
+show_total=0
+
+opts=$(getopt -o d:t:s:rHTh -l depth:,type:,sort:,reverse,human,total,help -n lc -- "$@") || exit 1
+eval set -- "$opts"
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-d|--depth)   depth="$2";  shift 2 ;;
+		-t|--type)    filter="$2"; shift 2 ;;
+		-s|--sort)    sort_key="$2"; shift 2 ;;
+		-r|--reverse) reverse=1;   shift ;;
+		-H|--human)   human=1;     shift ;;
+		-T|--total)   show_total=1; shift ;;
+		-h|--help)    usage ;;
+		--)           shift; break ;;
+		*)            die "unknown option: $1" ;;
+	esac
+done
+
 dir="${1:-.}"
-depth="${2:-1}"
+
+case "$filter" in
+	a|all)   filter= ;;
+	f|files) filter=f ;;
+	d|dirs)  filter=d ;;
+	*)       die "invalid type '$filter' (use a, f, or d)" ;;
+esac
+
+case "$sort_key" in
+	c|count) sort_flag="-k2" ;;
+	n|name)  sort_flag="-k3" ;;
+	t|type)  sort_flag="-k1" ;;
+	*)       die "invalid sort key '$sort_key' (use c, n, or d)" ;;
+esac
 
 count() {
-	f="$1"
+	local f="$1" files
 	files="$(git ls-files "$f")"
-	if [ -z "$files" ]; then
-		return 1
-	fi
-
-	echo "$files" | xargs cat | wc -l
+	[ -z "$files" ] && return 1
+	echo "$files" | xargs cat 2>/dev/null | wc -l
 }
 
-count_and_print() {
-	f="$1"
-	t="$2"
+results=$(mktemp)
+trap 'rm -f "$results"' EXIT
 
-	cnt="$(count "$f")" || return 0
+total=0
 
-	printf "%s %-6s %s\n" "$t" "$cnt" "$f"
-}
+if [ "$filter" != f ]; then
+	while read -r subdir; do
+		c=$(count "$subdir") || continue
+		total=$((total + c))
+		printf "d %d %s\n" "$c" "$subdir" >> "$results"
+	done < <(find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d 2>/dev/null)
+fi
 
-count_all() {
-	{
-		find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d |
-			while read -r subdir; do
-				count_and_print "$subdir" d
-			done
-	} 2>/dev/null
+if [ "$filter" != d ]; then
+	while read -r file; do
+		c=$(count "$file") || continue
+		total=$((total + c))
+		printf "f %d %s\n" "$c" "$file" >> "$results"
+	done < <(find "$dir" -maxdepth "$depth" -mindepth 1 -type f 2>/dev/null)
+fi
 
-	find "$dir" -maxdepth "$depth" -mindepth 1 -type f |
-		while read -r file; do
-			count_and_print "$file" f
+sort $sort_flag -h "$results" | {
+	if [ "$reverse" -eq 1 ]; then sort -r; else cat; fi
+} | {
+	if [ "$human" -eq 1 ]; then
+		while read -r t c f; do
+			hc=$(numfmt --to=si "$c" 2>/dev/null || echo "$c")
+			printf "%s %-6s %s\n" "$t" "$hc" "$f"
 		done
+	else
+		while read -r t c f; do
+			printf "%s %-6s %s\n" "$t" "$c" "$f"
+		done
+	fi
 }
 
-count_all | sort -k2 -h
+if [ "$show_total" -eq 1 ]; then
+	ht="$total"
+	[ "$human" -eq 1 ] && ht=$(numfmt --to=si "$total" 2>/dev/null || echo "$total")
+	printf "T %-6s total\n" "$ht"
+fi
