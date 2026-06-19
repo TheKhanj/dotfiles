@@ -7,6 +7,7 @@ usage() {
 	Count lines grouped by subdirectory/file.
 
 	Options:
+	  -j, --jobs <n>    Number of parallel jobs (default: auto)
 	  -d, --depth <n>   Max traversal depth (default: 1)
 	  -t, --type <a|f|d>  Filter: a=all, f=files, d=dirs (default: a)
 	  -s, --sort <c|n|t>  Sort by: c=count, n=name, t=type (default: c)
@@ -45,15 +46,24 @@ list_files() {
 count() {
 	local f="$1" files
 	files="$(list_files "$f")"
+	[ -z "$files" ] && return 1
 	if [ "$binary" -eq 0 ]; then
 		files=$(echo "$files" | xargs -d '\n' grep -Il . 2>/dev/null) || return 1
 		[ -z "$files" ] && return 1
 	fi
-	[ -z "$files" ] && return 1
 	echo "$files" | xargs -d '\n' cat 2>/dev/null | wc -l
 }
 
+_lc_job() {
+	local t="$1" f="$2" c
+	c=$(count "$f") || return 0
+	printf '%s\t%d\t%s\n' "$t" "$c" "$f"
+}
+
+export -f count list_files _lc_job
+
 parse_opts() {
+	jobs=$(($(nproc)))
 	depth=1
 	filter=a
 	sort_key=c
@@ -63,16 +73,17 @@ parse_opts() {
 	binary=0
 	git=1
 
-	opts=$(getopt -o d:t:s:rHnbah -l depth:,type:,sort:,reverse,human,no-total,binary,all,help -n lc -- "$@") || exit 1
+	opts=$(getopt -o j:d:t:s:rHnbah -l jobs:,depth:,type:,sort:,reverse,human,no-total,binary,all,help -n lc -- "$@") || exit 1
 	eval set -- "$opts"
 
 	while [ $# -gt 0 ]; do
 		case "$1" in
-			-d|--depth)     depth="$2";  shift 2 ;;
-			-t|--type)      filter="$2"; shift 2 ;;
+			-j|--jobs)      jobs="$2";    shift 2 ;;
+			-d|--depth)     depth="$2";   shift 2 ;;
+			-t|--type)      filter="$2";  shift 2 ;;
 			-s|--sort)      sort_key="$2"; shift 2 ;;
-			-r|--reverse)   reverse=1;   shift ;;
-			-H|--human)     human=1;     shift ;;
+			-r|--reverse)   reverse=1;    shift ;;
+			-H|--human)     human=1;      shift ;;
 			-n|--no-total)  show_total=0; shift ;;
 			-b|--binary)    binary=1;     shift ;;
 			-a|--all)       git=0;        shift ;;
@@ -100,23 +111,19 @@ parse_opts() {
 }
 
 collect() {
-	total=0
+	: > "$results"
 
 	if [ "$filter" != f ]; then
-		while read -r subdir; do
-			c=$(count "$subdir") || continue
-			total=$((total + c))
-			printf "d %d %s\n" "$c" "$subdir/" >> "$results"
-		done < <(find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d 2>/dev/null)
+		find "$dir" -maxdepth "$depth" -mindepth "$depth" -type d -print0 2>/dev/null |
+			parallel -0 -j "$jobs" _lc_job d {} >> "$results"
 	fi
 
 	if [ "$filter" != d ]; then
-		while read -r file; do
-			c=$(count "$file") || continue
-			total=$((total + c))
-			printf "f %d %s\n" "$c" "$file" >> "$results"
-		done < <(find "$dir" -maxdepth "$depth" -mindepth 1 -type f 2>/dev/null)
+		find "$dir" -maxdepth "$depth" -mindepth 1 -type f -print0 2>/dev/null |
+			parallel -0 -j "$jobs" _lc_job f {} >> "$results"
 	fi
+
+	total=$(awk -F'\t' '{s+=$2} END{print s+0}' "$results")
 }
 
 display() {
@@ -124,12 +131,12 @@ display() {
 		if [ "$reverse" -eq 1 ]; then sort -r; else cat; fi
 	} | {
 		if [ "$human" -eq 1 ]; then
-			while read -r t c f; do
+			while IFS=$'\t' read -r t c f; do
 				hc=$(numfmt --to=si "$c" 2>/dev/null || echo "$c")
 				printf "%s %-6s %s\n" "$t" "$hc" "$f"
 			done
 		else
-			while read -r t c f; do
+			while IFS=$'\t' read -r t c f; do
 				printf "%s %-6s %s\n" "$t" "$c" "$f"
 			done
 		fi
@@ -144,6 +151,8 @@ display() {
 
 main() {
 	parse_opts "$@"
+
+	export binary git
 
 	results=$(mktemp)
 	trap 'rm -f "$results"' EXIT
