@@ -23,9 +23,13 @@ __setup_apps() {
 	export NNN_PLUG='d:dragdrop;f:fzcd;b:cdpath;m:mark;'
 	export NNN_COLORS='#0a1b2c3d;1234'
 	export BROWSER="/usr/bin/chromium"
-	export GPG_TTY=$(tty)
-	# I shouldn't be sourcing .profile multiple times! Should I?
-	eval "$(ssh-agent -s)"
+
+	GPG_TTY=$(tty)
+	export GPG_TTY
+
+	if [ -z "$SSH_AUTH_SOCK" ] || [ -z "$SSH_AGENT_PID" ]; then
+		eval "$(ssh-agent -s)"
+	fi
 
 	[ "$(hostname)" = "lana" ] &&
 		export BASH_SILENCE_DEPRECATION_WARNING=1
