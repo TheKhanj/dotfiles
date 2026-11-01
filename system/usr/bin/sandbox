@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -lt 2 ]; then
+	echo "Usage: sandbox DIR -- COMMAND [ARGS...]" >&2
+	exit 1
+fi
+
+dir=$(realpath "$1")
+shift
+
+[ "$1" = "--" ] || {
+	echo "Expected -- before command" >&2
+	exit 1
+}
+shift
+
+exec bwrap \
+	--unshare-all \
+	--share-net \
+	--die-with-parent \
+	--new-session \
+	--ro-bind /usr /usr \
+	--ro-bind /bin /bin \
+	--ro-bind /lib /lib \
+	--ro-bind /lib64 /lib64 \
+	--proc /proc \
+	--dev /dev \
+	--tmpfs /tmp \
+	--bind "$dir" /workspace \
+	--chdir /workspace \
+	-- "$@"
