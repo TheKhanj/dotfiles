@@ -22,7 +22,6 @@ extra=()
 if [ "$cmd" = "opencode" ]; then
 	for d in \
 		"$HOME/.local/share/opencode" \
-		"$HOME/.local/state/opencode" \
 		"$HOME/.cache/opencode"; do
 		if [ -d "$d" ]; then
 			extra+=(--dir "$d")
