@@ -18,15 +18,30 @@ shift
 cmd="$1"
 
 extra=()
+
 if [ "$cmd" = "opencode" ]; then
 	for d in \
 		"$HOME/.local/share/opencode" \
 		"$HOME/.local/state/opencode" \
 		"$HOME/.cache/opencode"; do
 		if [ -d "$d" ]; then
+			extra+=(--dir "$d")
 			extra+=(--bind "$d" "$d")
 		fi
 	done
+fi
+
+xauth_file=${XAUTHORITY:-"$HOME/.Xauthority"}
+x11=()
+
+if [ -n "${DISPLAY:-}" ]; then
+	x11+=(--setenv DISPLAY "$DISPLAY")
+	x11+=(--ro-bind-try /tmp/.X11-unix /tmp/.X11-unix)
+
+	if [ -f "$xauth_file" ]; then
+		x11+=(--setenv XAUTHORITY /tmp/.Xauthority)
+		x11+=(--ro-bind "$xauth_file" /tmp/.Xauthority)
+	fi
 fi
 
 exec bwrap \
@@ -34,7 +49,6 @@ exec bwrap \
 	--share-net \
 	--die-with-parent \
 	--new-session \
-	${DISPLAY:+--setenv DISPLAY "$DISPLAY"} \
 	--tmpfs "$HOME" \
 	--dir "$HOME/.local" \
 	--dir "$HOME/.local/share" \
@@ -46,11 +60,11 @@ exec bwrap \
 	--ro-bind /lib64 /lib64 \
 	--ro-bind /etc/resolv.conf /etc/resolv.conf \
 	--ro-bind /etc/hosts /etc/hosts \
-	--ro-bind-try /tmp/.X11-unix /tmp/.X11-unix \
+	--tmpfs /tmp \
+	"${x11[@]}" \
 	"${extra[@]}" \
 	--proc /proc \
 	--dev /dev \
-	--tmpfs /tmp \
 	--bind "$dir" /workspace \
 	--chdir /workspace \
 	-- "$@"
