@@ -19,12 +19,12 @@ cmd="$1"
 
 extra=()
 if [ "$cmd" = "opencode" ]; then
-	for dir in \
+	for d in \
 		"$HOME/.local/share/opencode" \
 		"$HOME/.local/state/opencode" \
 		"$HOME/.cache/opencode"; do
-		if [ -d "$dir" ]; then
-			extra+=(--bind "$dir" "$dir")
+		if [ -d "$d" ]; then
+			extra+=(--bind "$d" "$d")
 		fi
 	done
 fi
