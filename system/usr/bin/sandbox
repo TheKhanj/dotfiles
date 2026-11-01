@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eu
 
 if [ "$#" -lt 2 ]; then
@@ -15,6 +15,20 @@ shift
 }
 shift
 
+cmd="$1"
+
+extra=()
+if [ "$cmd" = "opencode" ]; then
+	for dir in \
+		"$HOME/.local/share/opencode" \
+		"$HOME/.local/state/opencode" \
+		"$HOME/.cache/opencode"; do
+		if [ -d "$dir" ]; then
+			extra+=(--bind "$dir" "$dir")
+		fi
+	done
+fi
+
 exec bwrap \
 	--unshare-all \
 	--share-net \
@@ -24,6 +38,10 @@ exec bwrap \
 	--ro-bind /bin /bin \
 	--ro-bind /lib /lib \
 	--ro-bind /lib64 /lib64 \
+	--ro-bind /etc/resolv.conf /etc/resolv.conf \
+	--ro-bind /etc/hosts /etc/hosts \
+	--ro-bind "$HOME" "$HOME" \
+	"${extra[@]}" \
 	--proc /proc \
 	--dev /dev \
 	--tmpfs /tmp \
